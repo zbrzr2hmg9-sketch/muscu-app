@@ -22,7 +22,7 @@
   }
 }
 *{box-sizing:border-box}
-body{background:var(--bg); color:var(--fg); font-family:var(--body); font-size:16px; line-height:1.4; padding-block:16px 96px; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px))}
+body{background:var(--bg); color:var(--fg); font-family:var(--body); font-size:16px; line-height:1.4; padding-block:16px 96px; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); overflow-x:hidden}
 .wrap{max-width:600px; margin:0 auto}
 button,input,select,textarea{font:inherit; color:inherit}
 button{cursor:pointer; -webkit-tap-highlight-color:transparent}
@@ -30,8 +30,22 @@ button{cursor:pointer; -webkit-tap-highlight-color:transparent}
 h1{font-family:var(--display); font-weight:800; font-size:32px; margin:0 0 4px 0; letter-spacing:-0.5px}
 h2{font-family:var(--display); font-weight:700; font-size:22px; margin:0 0 12px 0}
 h3{font-family:var(--display); font-weight:600; font-size:17px; margin:0}
+
+/* ANIMATIONS GLOBALES */
+@keyframes slideInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes slideInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(32, 178, 170, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(32, 178, 170, 0); } 100% { box-shadow: 0 0 0 0 rgba(32, 178, 170, 0); } }
+@keyframes drawLine { from { stroke-dashoffset: 1000; } to { stroke-dashoffset: 0; } }
+
+section:not([hidden]) { animation: fadeInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.row, .ex-row { transition: transform 0.1s ease, background-color 0.2s ease; }
+.row:active, .ex-row:active, .btn:active, .icon-btn:active { transform: scale(0.97); background-color: var(--rule); }
+.btn { transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease; }
+.btn:active { transform: scale(0.95); }
+.cascade-item { opacity: 0; animation: fadeInUp 0.4s ease forwards; }
+
 .head{margin-bottom:20px; padding-top:8px}
-.head .sub{font-size:15px; color:var(--muted); font-weight:500; display:flex; align-items:center; gap:6px}
 .head .line{display:inline-block; width:40px; height:4px; background:var(--accent); border-radius:2px; margin-top:6px}
 .card{background:var(--surface); border-radius:16px; overflow:hidden; margin-bottom:16px}
 .row{display:flex; align-items:center; justify-content:space-between; padding:16px; border-bottom:1px solid var(--rule); gap:12px}
@@ -42,25 +56,28 @@ h3{font-family:var(--display); font-weight:600; font-size:17px; margin:0}
 .row .r-right{display:flex; align-items:center; gap:12px; flex-shrink:0}
 .badge-jours{background:#E8E8ED; color:#555; font-size:13px; font-weight:600; padding:4px 10px; border-radius:12px; display:flex; align-items:center; gap:4px}
 .badge-jours .check{color:var(--accent); font-size:12px}
-.info-btn{background:transparent; border:2px solid var(--accent); color:var(--accent); width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; cursor:pointer}
+.info-btn{background:transparent; border:2px solid var(--accent); color:var(--accent); width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; cursor:pointer; transition: transform 0.15s ease;}
+.info-btn:active{ transform: scale(0.85); }
 .chevron{color:#C7C7CC; font-size:20px; font-weight:400}
-.icon-btn{background:transparent; border:0; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; color:var(--muted)}
+.icon-btn{background:transparent; border:0; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; color:var(--muted); transition: transform 0.15s ease;}
 .btn{min-height:44px; padding:0 16px; border-radius:10px; border:1px solid var(--rule); background:var(--surface); font-weight:600; font-size:15px}
 .btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
 .btn.ghost{background:transparent; border-color:transparent; color:var(--accent)}
-input[type="text"], input[type="number"], input[type="date"], textarea{width:100%; border:1px solid var(--rule); border-radius:10px; background:var(--bg); padding:12px; font-size:16px; color:var(--fg); outline:none}
-input:focus, textarea:focus{border-color:var(--accent)}
+input[type="text"], input[type="number"], input[type="date"], textarea{width:100%; border:1px solid var(--rule); border-radius:10px; background:var(--bg); padding:12px; font-size:16px; color:var(--fg); outline:none; transition: border-color 0.2s ease, box-shadow 0.2s ease;}
+input:focus, textarea:focus{border-color:var(--accent); box-shadow: 0 0 0 3px var(--accent-light);}
 .lbl{display:block; font-size:13px; font-weight:600; color:var(--muted); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px}
 nav{position:fixed; left:0; right:0; bottom:0; background:var(--surface); border-top:1px solid var(--rule); z-index:20; padding-bottom:env(safe-area-inset-bottom, 0px); display:flex; justify-content:space-around; height:64px; padding-top:8px}
-nav button{background:none; border:0; display:flex; flex-direction:column; align-items:center; gap:4px; color:var(--muted); font-size:10px; font-weight:600; padding:0 8px; flex:1}
-nav button svg{width:24px; height:24px; fill:currentColor}
+nav button{background:none; border:0; display:flex; flex-direction:column; align-items:center; gap:4px; color:var(--muted); font-size:10px; font-weight:600; padding:0 8px; flex:1; transition: color 0.2s ease, transform 0.15s ease;}
+nav button svg{width:24px; height:24px; fill:currentColor; transition: transform 0.2s ease;}
 nav button.active{color:var(--accent)}
+nav button.active svg{transform: translateY(-2px);}
 
 /* Écran Séance (Pull A) */
 .session-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px}
 .ex-row{display:flex; align-items:center; padding:16px; border-bottom:1px solid var(--rule); gap:12px; cursor:pointer}
 .ex-row:last-child{border-bottom:0}
-.ex-illu{width:50px; height:50px; background:#F0F0F5; border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:10px; flex-shrink:0}
+.ex-illu{width:50px; height:50px; background:#F0F0F5; border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:10px; flex-shrink:0; transition: transform 0.2s ease;}
+.ex-row:active .ex-illu{ transform: scale(0.9); }
 .ex-info{flex:1; display:flex; flex-direction:column; gap:4px}
 .ex-title{font-weight:600; font-size:16px; color:var(--fg)}
 .ex-sub{font-size:13px; color:var(--muted)}
@@ -76,14 +93,18 @@ nav button.active{color:var(--accent)}
 .set-history-text u{text-decoration:underline; text-decoration-color:#C7C7CC}
 .chart-container{background:var(--surface); border-radius:16px; padding:16px; margin-top:16px}
 .chart-svg{width:100%; height:auto; overflow:visible}
-.timer-bar{position:fixed; bottom:64px; left:0; right:0; background:var(--surface); border-top:1px solid var(--rule); padding:12px 16px; display:flex; align-items:center; gap:16px; z-index:10}
+.chart-line { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawLine 1.5s ease-out forwards; }
+.chart-point { opacity: 0; animation: fadeInUp 0.3s ease 0.8s forwards; }
+.timer-bar{position:fixed; bottom:64px; left:0; right:0; background:var(--surface); border-top:1px solid var(--rule); padding:12px 16px; display:flex; align-items:center; gap:16px; z-index:10; animation: slideInUp 0.3s ease forwards; box-shadow: 0 -4px 12px rgba(0,0,0,0.05);}
+@keyframes slideInUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 .timer-display{font-family:monospace; font-size:24px; font-weight:700; color:var(--muted); flex:1; text-align:center}
+.timer-active { animation: pulseGlow 2s infinite; background-color: var(--accent-light) !important; color: var(--accent) !important; }
 
 /* Coach Chat */
 .chat-container{display:flex; flex-direction:column; gap:12px; margin-bottom:16px}
-.msg{max-width:85%; padding:12px 16px; border-radius:20px; font-size:15px; line-height:1.4}
-.msg.user{align-self:flex-end; background:var(--accent); color:#fff; border-bottom-right-radius:4px}
-.msg.bot{align-self:flex-start; background:var(--surface); border:1px solid var(--rule); border-bottom-left-radius:4px}
+.msg{max-width:85%; padding:12px 16px; border-radius:20px; font-size:15px; line-height:1.4; animation: fadeInUp 0.3s ease forwards;}
+.msg.user{align-self:flex-end; background:var(--accent); color:#fff; border-bottom-right-radius:4px; animation-name: slideInRight;}
+.msg.bot{align-self:flex-start; background:var(--surface); border:1px solid var(--rule); border-bottom-left-radius:4px; animation-name: slideInLeft;}
 </style>
 
 <div class="wrap">
@@ -139,6 +160,11 @@ nav button.active{color:var(--accent)}
   var timerInt = null;
   var timerSec = 0;
   var timerRunning = false;
+
+  // Fonction utilitaire de vibration (haptique)
+  function haptic() {
+    if (navigator.vibrate) navigator.vibrate(10);
+  }
 
   function uid8(){return Math.random().toString(36).slice(2,10)}
   function pad(n){return String(n).padStart(2,'0')}
@@ -196,15 +222,16 @@ nav button.active{color:var(--accent)}
   function renderEntrainements(){
     var el = $('#v-entrainements');
     var today = new Date();
-    var tplsHtml = state.templates.map(function(t){
+    var tplsHtml = state.templates.map(function(t, i){
       var lastDone = state.sessions.filter(s => s.title === t.title).sort((a,b)=>b.date.localeCompare(a.date))[0];
       var daysAgo = 'Nouveau';
       if(lastDone){
         var diff = Math.floor((today - parseDate(lastDone.date)) / (1000 * 60 * 60 * 24));
         daysAgo = diff === 0 ? "Auj." : diff + " j";
       }
+      // Animation en cascade : chaque ligne apparaît avec un délai
       return `
-        <div class="row" data-act="start-tpl" data-id="${t.id}">
+        <div class="row cascade-item" style="animation-delay: ${i * 0.05}s" data-act="start-tpl" data-id="${t.id}">
           <div class="r-left"><div class="r-title">${esc(t.title)}</div><div class="r-sub">${esc(t.desc)}</div></div>
           <div class="r-right"><div class="badge-jours"><span class="check">✓</span> ${daysAgo}</div><div class="info-btn">i</div><div class="chevron">›</div></div>
         </div>
@@ -273,7 +300,6 @@ nav button.active{color:var(--accent)}
     if(!state.currentSession) return;
 
     var exHtml = state.currentSession.exercises.map(function(ex, i){
-      // Calcul résumé : 2 séries • 8-10 reps • 14kg
       var setsCount = ex.sets.length;
       var minReps = Math.min(...ex.sets.map(s=>s.reps||0));
       var maxReps = Math.max(...ex.sets.map(s=>s.reps||0));
@@ -281,7 +307,7 @@ nav button.active{color:var(--accent)}
       var rangeReps = minReps === maxReps ? `${maxReps}` : `${minReps}-${maxReps}`;
       
       return `
-        <div class="ex-row" data-act="open-exo" data-index="${i}">
+        <div class="ex-row cascade-item" style="animation-delay: ${i * 0.05}s" data-act="open-exo" data-index="${i}">
           <div class="ex-illu">🏋️</div>
           <div class="ex-info">
             <div class="ex-title">${esc(ex.name)}</div>
@@ -315,11 +341,9 @@ nav button.active{color:var(--accent)}
     if(!state.currentExo) return;
     
     var ex = state.currentExo;
-    // Récupérer l'historique de cet exo dans les séances passées
     var pastSessions = state.sessions.filter(s => s.exercises.some(e => e.name === ex.name)).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,3);
 
     var setsHtml = ex.sets.map(function(s, j){
-      // Chercher les 3 dernières perfs pour cette série précise
       var historyLines = pastSessions.map(ps => {
         var pex = ps.exercises.find(e => e.name === ex.name);
         var pset = pex.sets[j];
@@ -328,191 +352,4 @@ nav button.active{color:var(--accent)}
       }).join('');
 
       return `
-        <div class="set-history-row">
-          <div class="set-circle">${j+1}</div>
-          <div class="set-main" style="width:120px">
-            ${s.reps||0}-${s.reps||0} × ${Number(s.kg||0).toFixed(2)}<span>kg</span>
-          </div>
-          <div class="set-history-text">${historyLines || '<span style="font-size:12px">Aucun historique</span>'}</div>
-        </div>
-      `;
-    }).join('');
-
-    // Graphique factice (on génère un SVG simple basé sur le maxKg)
-    var maxWeight = Math.max(...ex.sets.map(s=>s.kg||0));
-    var svgHtml = `
-      <div class="chart-container">
-        <div style="display:flex; justify-content:space-between; color:var(--muted); font-size:12px; margin-bottom:12px">
-          <span>12 ×</span>
-          <span>${maxWeight.toFixed(2)} kg</span>
-        </div>
-        <svg class="chart-svg" viewBox="0 0 300 100">
-          <path d="M0 80 Q 50 70, 100 80 T 200 40 T 300 40" fill="none" stroke="var(--accent)" stroke-width="3"/>
-          <circle cx="200" cy="40" r="4" fill="var(--accent)"/>
-          <circle cx="300" cy="40" r="4" fill="var(--accent)"/>
-        </svg>
-      </div>
-    `;
-
-    el.innerHTML = `
-      <div class="exo-detail-header">
-        <button class="icon-btn" data-act="back-to-session"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
-        <div style="display:flex; gap:8px">
-          <button class="icon-btn">⌨️</button>
-          <button class="icon-btn">👤</button>
-          <button class="icon-btn" data-act="timer-show">⏱️</button>
-        </div>
-      </div>
-      
-      <div class="exo-detail-title">${esc(ex.name)}</div>
-      
-      <div class="card" style="padding:16px;">
-        ${setsHtml}
-      </div>
-      
-      ${svgHtml}
-    `;
-    $('#timer-bar').hidden = false;
-  }
-
-  /* --- RENDU : COACH --- */
-  function renderCoach(){
-    var el = $('#v-coach');
-    var msgs = state.chat.map(m => `<div class="msg ${m.role}">${esc(m.text)}</div>`).join('');
-    el.innerHTML = `
-      <div class="head" style="display:flex; justify-content:space-between; align-items:center">
-        <button class="btn ghost" data-act="tab" data-tab="reglages" style="padding:0">‹ Retour</button>
-        <h1 style="margin:0; font-size:20px">Coach IA</h1><div style="width:60px"></div>
-      </div>
-      <div class="chat-container" id="chatlist">${msgs || '<div class="msg bot">Bonjour ! Posez-moi une question.</div>'}</div>
-      <div style="display:flex; gap:8px; margin-top:12px">
-        <input type="text" id="chat-in" placeholder="Votre question..." style="flex:1">
-        <button class="btn primary" data-act="send-chat">Envoyer</button>
-      </div>
-    `;
-    var list = $('#chatlist'); if(list) list.scrollTop = list.scrollHeight;
-  }
-
-  function renderAll(){
-    ['entrainements','exercices','historique','mensurations','reglages','seance','exo-detail','coach'].forEach(function(t){$('#v-'+t).hidden=state.tab!==t});
-    document.querySelectorAll('nav button').forEach(function(b){
-      if(b.dataset.tab===state.tab) b.classList.add('active'); else b.classList.remove('active');
-    });
-
-    if(state.tab === 'entrainements') renderEntrainements();
-    else if(state.tab === 'exercices') renderExercices();
-    else if(state.tab === 'historique') renderHistorique();
-    else if(state.tab === 'mensurations') renderMensurations();
-    else if(state.tab === 'reglages') renderReglages();
-    else if(state.tab === 'seance') renderSeance();
-    else if(state.tab === 'exo-detail') renderExoDetail();
-    else if(state.tab === 'coach') renderCoach();
-  }
-
-  /* --- TIMER --- */
-  function updateTimerDisplay() {
-    var h = Math.floor(timerSec / 3600);
-    var m = Math.floor((timerSec % 3600) / 60);
-    var s = timerSec % 60;
-    $('#timer-display').textContent = pad(h) + ':' + pad(m) + ':' + pad(s);
-  }
-  function toggleTimer() {
-    if(timerRunning) {
-      clearInterval(timerInt);
-      $('#timer-btn').textContent = 'Start';
-    } else {
-      timerInt = setInterval(() => { timerSec++; updateTimerDisplay(); }, 1000);
-      $('#timer-btn').textContent = 'Stop';
-    }
-    timerRunning = !timerRunning;
-  }
-
-  /* --- ACTIONS --- */
-  document.addEventListener('click', function(ev){
-    var t = ev.target.closest('[data-act]');
-    if(!t) return;
-    var act = t.dataset.act;
-
-    if(act === 'tab'){
-      state.tab = t.dataset.tab;
-      renderAll();
-      window.scrollTo(0,0);
-    }
-    else if(act === 'start-tpl'){
-      var tpl = state.templates.find(x => x.id === t.dataset.id);
-      if(!tpl) return;
-      
-      var ns = { id: uid8(), date: todayStr(), title: tpl.title, exercises: [] };
-      tpl.exercises.forEach(function(exName){
-        // Pré-remplir avec l'historique
-        var h = state.sessions.flatMap(s => s.exercises).filter(e => e.name === exName)[0];
-        var sets = [{reps: h?.sets[0]?.reps || 10, kg: h?.sets[0]?.kg || 0}, {reps: h?.sets[1]?.reps || 10, kg: h?.sets[1]?.kg || 0}];
-        ns.exercises.push({name: exName, sets: sets});
-      });
-      state.currentSession = ns;
-      state.tab = 'seance';
-      renderAll();
-    }
-    else if(act === 'open-exo'){
-      var idx = parseInt(t.dataset.index);
-      state.currentExo = state.currentSession.exercises[idx];
-      state.tab = 'exo-detail';
-      renderAll();
-    }
-    else if(act === 'back-to-session'){
-      state.currentExo = null;
-      $('#timer-bar').hidden = true; // cacher le timer
-      state.tab = 'seance';
-      renderAll();
-    }
-    else if(act === 'cal-prev'){ calMonth--; if(calMonth < 0){ calMonth = 11; calYear--; } renderHistorique(); }
-    else if(act === 'cal-next'){ calMonth++; if(calMonth > 11){ calMonth = 0; calYear++; } renderHistorique(); }
-    else if(act === 'timer-show'){ $('#timer-bar').hidden = false; }
-    else if(act === 'timer-toggle'){ toggleTimer(); }
-    else if(act === 'timer-reset'){ clearInterval(timerInt); timerRunning = false; timerSec = 0; updateTimerDisplay(); $('#timer-btn').textContent = 'Start'; }
-    else if(act === 'send-chat'){
-      var inp = $('#chat-in');
-      if(!inp || !inp.value.trim()) return;
-      var q = inp.value.trim();
-      inp.value = '';
-      state.chat.push({ role: 'user', text: q });
-      renderCoach();
-      
-      var samplePromise = getSample();
-      samplePromise.then(sample => {
-        return sample("Contexte muscu. Question: " + q, {
-          onText: function(res) {
-            var msgs = document.querySelectorAll('.msg.bot');
-            var lastBot = msgs[msgs.length - 1];
-            if(!lastBot || lastBot.textContent === 'En cours...') {
-               var div = document.createElement('div');
-               div.className = 'msg bot';
-               div.textContent = res.text;
-               $('#chatlist').appendChild(div);
-            } else {
-               lastBot.textContent = res.text;
-            }
-          }
-        });
-      }).then(res => {
-        state.chat.push({ role: 'bot', text: res.text });
-      }).catch(err => {
-        alert("Erreur coach : " + err.message);
-      });
-    }
-    // SAUVEGARDER LA SÉANCE (bouton Terminer)
-    else if(act === 'finish-session'){
-      state.sessions.push(JSON.parse(JSON.stringify(state.currentSession)));
-      saveSessions();
-      state.currentSession = null;
-      state.currentExo = null;
-      $('#timer-bar').hidden = true;
-      state.tab = 'entrainements';
-      renderAll();
-    }
-  });
-
-  initStore();
-})();
-</script>
-</body></html>
+        <div class="set-history-row
