@@ -10,7 +10,7 @@
 :root{
   --bg:#F2F2F7; --surface:#FFFFFF; --fg:#1C1C1E; --muted:#8E8E93; --rule:#E5E5EA;
   --accent:#20B2AA; --accent-fg:#FFFFFF; --accent-light:#E0F7F6;
-  --danger:#FF3B30; --blue:#007AFF; --green:#34C759;
+  --danger:#FF3B30; --blue:#007AFF;
   --display:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
   --body:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
 }
@@ -30,21 +30,6 @@ button{cursor:pointer; -webkit-tap-highlight-color:transparent}
 h1{font-family:var(--display); font-weight:800; font-size:32px; margin:0 0 4px 0; letter-spacing:-0.5px}
 h2{font-family:var(--display); font-weight:700; font-size:22px; margin:0 0 12px 0}
 h3{font-family:var(--display); font-weight:600; font-size:17px; margin:0}
-
-/* ANIMATIONS */
-@keyframes slideInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-@keyframes slideInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-section:not([hidden]) { animation: fadeInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.row, .ex-row { transition: transform 0.1s ease, background-color 0.2s ease; }
-.row:active, .ex-row:active, .btn:active { transform: scale(0.97); background-color: var(--rule); }
-.btn { transition: transform 0.15s ease, background-color 0.15s ease; }
-.btn:active { transform: scale(0.95); }
-.cascade-item { opacity: 0; animation: fadeInUp 0.4s ease forwards; }
-
 .head{margin-bottom:20px; padding-top:8px; display:flex; justify-content:space-between; align-items:flex-end;}
 .head .line{display:inline-block; width:40px; height:4px; background:var(--accent); border-radius:2px; margin-top:6px}
 .card{background:var(--surface); border-radius:16px; overflow:hidden; margin-bottom:16px}
@@ -54,8 +39,9 @@ section:not([hidden]) { animation: fadeInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) f
 .row .r-title{font-weight:600; font-size:17px; color:var(--fg)}
 .row .r-sub{font-size:13px; color:var(--muted); font-weight:500}
 .row .r-right{display:flex; align-items:center; gap:12px; flex-shrink:0}
-.badge-jours{background:#E8E8ED; color:#555; font-size:13px; font-weight:600; padding:4px 10px; border-radius:12px;}
-.info-btn{background:transparent; border:2px solid var(--accent); color:var(--accent); width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;}
+.badge-jours{background:#E8E8ED; color:#555; font-size:13px; font-weight:600; padding:4px 10px; border-radius:12px; display:flex; align-items:center; gap:4px}
+.badge-jours .check{color:var(--accent); font-size:12px}
+.info-btn{background:transparent; border:2px solid var(--accent); color:var(--accent); width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; cursor:pointer;}
 .chevron{color:#C7C7CC; font-size:20px; font-weight:400}
 .icon-btn{background:transparent; border:0; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; color:var(--muted);}
 .btn{min-height:44px; padding:0 16px; border-radius:10px; border:1px solid var(--rule); background:var(--surface); font-weight:600; font-size:15px}
@@ -67,68 +53,49 @@ nav{position:fixed; left:0; right:0; bottom:0; background:var(--surface); border
 nav button{background:none; border:0; display:flex; flex-direction:column; align-items:center; gap:4px; color:var(--muted); font-size:10px; font-weight:600; padding:0 8px; flex:1;}
 nav button svg{width:24px; height:24px; fill:currentColor;}
 nav button.active{color:var(--accent)}
-
-/* Image Exercice */
 .ex-row{display:flex; align-items:center; padding:16px; border-bottom:1px solid var(--rule); gap:12px; cursor:pointer}
 .ex-illu{width:50px; height:50px; background:#F0F0F5; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; overflow:hidden;}
 .ex-illu img{width:100%; height:100%; object-fit:contain;}
 .ex-info{flex:1; display:flex; flex-direction:column; gap:4px}
 .ex-title{font-weight:600; font-size:16px; color:var(--fg)}
 .ex-sub{font-size:13px; color:var(--muted)}
-
-/* Détail Exercice */
-.ex-detail-hero { display:flex; align-items:center; gap:16px; margin-bottom:20px; }
-.ex-detail-hero img { width:80px; height:80px; object-fit:contain; background:var(--surface); border-radius:16px; padding:8px; }
-.ex-detail-stats { display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;}
-.ex-detail-stat { flex:1 1 40%; background:var(--surface); border-radius:12px; padding:12px; text-align:center; }
-.ex-detail-stat .val { font-size:20px; font-weight:800; color:var(--accent); }
-.ex-detail-stat .lbl { font-size:11px; }
-
-/* Séance en cours */
 .session-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px}
 .exo-detail-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px}
-.exo-detail-title{font-size:28px; font-weight:800; line-height:1.1; margin-bottom:20px}
-.set-history-row{display:flex; align-items:center; padding:12px 0; border-bottom:1px solid var(--rule); gap:10px; flex-wrap:wrap;}
+.exo-detail-title{font-size:32px; font-weight:800; line-height:1.1; letter-spacing:-0.5px; margin-bottom:20px}
+.set-history-row{display:flex; align-items:center; padding:12px 0; border-bottom:1px solid var(--rule); gap:16px}
 .set-history-row:last-child{border-bottom:0}
 .set-circle{width:32px; height:32px; border-radius:50%; background:#E8E8ED; color:#555; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0}
-.set-inputs{display:flex; gap:6px; width:100%; max-width:240px;}
-.set-inputs input{width:33%; text-align:center; padding:6px; font-weight:700; height:40px; font-size:14px;}
-.set-history-text{flex:1; text-align:right; color:var(--muted); font-size:12px; line-height:1.4; min-width:100px;}
+.set-inputs{display:flex; gap:8px; width:140px}
+.set-inputs input{width:60px; text-align:center; padding:8px; font-weight:700; height:40px}
+.set-history-text{flex:1; text-align:right; color:var(--muted); font-size:13px; line-height:1.6}
+.set-history-text u{text-decoration:underline; text-decoration-color:#C7C7CC}
 .chart-container{background:var(--surface); border-radius:16px; padding:16px; margin-top:16px}
 .chart-svg{width:100%; height:auto; overflow:visible}
 .chart-line { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawLine 1.5s ease-out forwards; }
+.chart-point { opacity: 0; animation: fadeInUp 0.3s ease 0.8s forwards; }
 @keyframes drawLine { to { stroke-dashoffset: 0; } }
-
-/* Timer & Toast */
-.timer-bar{position:fixed; bottom:64px; left:0; right:0; background:var(--surface); border-top:1px solid var(--rule); padding:12px 16px; display:flex; align-items:center; gap:16px; z-index:10; animation: slideUp 0.3s ease;}
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+.timer-bar{position:fixed; bottom:64px; left:0; right:0; background:var(--surface); border-top:1px solid var(--rule); padding:12px 16px; display:flex; align-items:center; gap:16px; z-index:10; box-shadow: 0 -4px 12px rgba(0,0,0,0.05);}
 .timer-display{font-family:monospace; font-size:24px; font-weight:700; color:var(--muted); flex:1; text-align:center}
 .timer-active { background-color: var(--accent-light) !important; color: var(--accent) !important; }
-#toast{position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:var(--fg); color:var(--bg); padding:12px 20px; border-radius:20px; font-size:14px; z-index:200; display:flex; gap:12px; align-items:center; box-shadow:0 4px 12px rgba(0,0,0,0.2); animation: slideUp 0.3s ease;}
-#toast button{background:transparent; border:1px solid var(--bg); color:var(--bg); padding:4px 10px; border-radius:6px; font-weight:600;}
-
-/* Modales */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; display: flex; align-items: center; justify-content: center; animation: fadeInUp 0.2s ease forwards; }
-.modal-content { background: var(--surface); width: 90%; max-width: 400px; border-radius: 16px; padding: 20px; animation: popIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.modal-content h2 { margin-bottom: 16px; text-align: center; }
-.modal-content .form-group { margin-bottom: 16px; }
-.modal-content .btn-row { display: flex; gap: 12px; margin-top: 20px; }
-.modal-content .btn-row .btn { flex: 1; }
-
-/* Calendrier */
-.cal { background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
-.cal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; gap: 8px 0; }
-.cal-day-name { font-size: 12px; font-weight: 600; color: var(--muted); padding-bottom: 8px; }
-.cal-day { position: relative; padding: 6px 0; font-size: 15px; font-weight: 500; border-radius: 8px; cursor: pointer; display:flex; flex-direction:column; align-items:center;}
-.cal-day.has-workout { background: var(--accent-light); color: var(--accent); font-weight: 700; }
-.cal-day .cal-title { font-size: 8px; font-weight: 600; color: var(--accent); text-transform:uppercase; margin-top:2px; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
-.cal-day.empty:hover { background: var(--bg); }
-
-/* Chat */
 .chat-container{display:flex; flex-direction:column; gap:12px; margin-bottom:16px}
 .msg{max-width:85%; padding:12px 16px; border-radius:20px; font-size:15px; line-height:1.4;}
 .msg.user{align-self:flex-end; background:var(--accent); color:#fff; border-bottom-right-radius:4px;}
 .msg.bot{align-self:flex-start; background:var(--surface); border:1px solid var(--rule); border-bottom-left-radius:4px;}
+.cal { background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+.cal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.cal-head button { background: var(--bg); border: 1px solid var(--rule); border-radius: 8px; width: 36px; height: 36px; color: var(--fg); font-size: 18px; display: flex; align-items: center; justify-content: center; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; gap: 8px 0; }
+.cal-day-name { font-size: 12px; font-weight: 600; color: var(--muted); padding-bottom: 8px; }
+.cal-day { position: relative; padding: 6px 0; font-size: 15px; font-weight: 500; cursor: pointer; border-radius: 8px; color: var(--fg); display:flex; flex-direction:column; align-items:center;}
+.cal-day.has-workout { color: var(--accent); font-weight: 700; }
+.cal-day.has-workout::after { content: ''; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; display: flex; align-items: center; justify-content: center; }
+.modal-content { background: var(--surface); width: 90%; max-width: 400px; border-radius: 16px; padding: 20px; }
+.modal-content h2 { margin-bottom: 16px; text-align: center; }
+.modal-content .form-group { margin-bottom: 16px; }
+.modal-content .btn-row { display: flex; gap: 12px; margin-top: 20px; }
+.modal-content .btn-row .btn { flex: 1; }
 </style>
 
 <div class="wrap" id="app-wrap">
@@ -141,42 +108,19 @@ nav button.active{color:var(--accent)}
     <section id="v-seance" aria-label="Séance en cours" hidden></section>
     <section id="v-exo-detail" aria-label="Détail exercice" hidden></section>
     <section id="v-session-summary" aria-label="Résumé de séance" hidden></section>
-    <section id="v-stats" aria-label="Statistiques" hidden></section>
     <section id="v-coach" aria-label="Coach IA" hidden></section>
   </main>
 </div>
 <nav aria-label="Navigation">
-  <button type="button" data-act="tab" data-tab="entrainements" class="active">
-    <svg viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/></svg>
-    Entraînements
-  </button>
-  <button type="button" data-act="tab" data-tab="exercices">
-    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
-    Exercices
-  </button>
-  <button type="button" data-act="tab" data-tab="historique">
-    <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
-    Historique
-  </button>
-  <button type="button" data-act="tab" data-tab="mensurations">
-    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
-    Mensurations
-  </button>
-  <button type="button" data-act="tab" data-tab="reglages">
-    <svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
-    Réglages
-  </button>
+  <button type="button" data-act="tab" data-tab="entrainements" class="active"><svg viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/></svg>Entraînements</button>
+  <button type="button" data-act="tab" data-tab="exercices"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>Exercices</button>
+  <button type="button" data-act="tab" data-tab="historique"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>Historique</button>
+  <button type="button" data-act="tab" data-tab="mensurations"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>Mensurations</button>
+  <button type="button" data-act="tab" data-tab="reglages"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>Réglages</button>
 </nav>
 
-<div class="timer-bar" id="timer-bar" hidden>
-  <div class="timer-display" id="timer-display">00:00:00</div>
-  <button class="btn primary" data-act="timer-toggle" id="timer-btn">Start</button>
-  <button class="icon-btn" data-act="timer-reset" style="font-size:16px">↺</button>
-</div>
+<div class="timer-bar" id="timer-bar" hidden><div class="timer-display" id="timer-display">00:00:00</div><button class="btn primary" data-act="timer-toggle" id="timer-btn">Start</button><button class="icon-btn" data-act="timer-reset" style="font-size:16px">↺</button></div>
 
-<div id="toast" hidden></div>
-
-<!-- Modales -->
 <div id="modal-new-session" class="modal-overlay" hidden>
   <div class="modal-content">
     <h2>Nouvelle séance</h2>
@@ -186,126 +130,33 @@ nav button.active{color:var(--accent)}
   </div>
 </div>
 
-<div id="modal-add-journal" class="modal-overlay" hidden>
-  <div class="modal-content">
-    <h2>Ajouter un journal</h2>
-    <div class="form-group"><label class="lbl">Reps</label><input type="number" id="journal-reps" placeholder="Ex: 10"></div>
-    <div class="form-group"><label class="lbl">Poids (kg)</label><input type="number" id="journal-kg" placeholder="Ex: 80"></div>
-    <div class="form-group"><label class="lbl">RIR / Notes</label><input type="text" id="journal-notes" placeholder="Ex: 2 RIR"></div>
-    <div class="btn-row"><button class="btn ghost" data-act="close-modal">Annuler</button><button class="btn primary" data-act="save-journal">Ajouter</button></div>
-  </div>
-</div>
-
 <script>
 var EXERCISES_DB = [
-  {n:"Élévation Latérale Machine Unilatéral", r:"Épaules", g:"Épaules"},
-  {n:"Archer Pull", r:"Épaules", g:"Épaules"},
-  {n:"Cable Rear Delt Fly", r:"Épaules", g:"Épaules"},
-  {n:"Gym80 Lateral Raise", r:"Épaules", g:"Épaules"},
-  {n:"Gym80 Shoulder Press", r:"Épaules", g:"Épaules"},
-  {n:"LifeFitness Lateral Raise", r:"Épaules", g:"Épaules"},
-  {n:"Lu Lateral Raises", r:"Épaules", g:"Épaules"},
-  {n:"Shoulder Press", r:"Épaules", g:"Épaules"},
-  {n:"Shoulder Press Technogym", r:"Épaules", g:"Épaules"},
-  {n:"Élévation Latérale avec Haltère, Couché sur le Côté", r:"Épaules", g:"Épaules"},
-  {n:"Élévation Latérale à Un Bras à la Poulie Basse", r:"Épaules", g:"Épaules"},
-  {n:"Élévation Latérale à la Machine", r:"Épaules", g:"Épaules"},
-  {n:"Développé Arnold", r:"Épaules", g:"Épaules, Pectoraux"},
-  {n:"Développé Devant à la Barre, Assis", r:"Épaules", g:"Épaules, Pectoraux"},
-  {n:"Développé Devant à la Barre, Debout", r:"Épaules", g:"Épaules, Pectoraux"},
-  {n:"Développé Devant à la Smith Machine, Assis", r:"Épaules", g:"Épaules, Pectoraux"},
-  {n:"Face Pull", r:"Épaules", g:"Épaules, Trapèzes"},
-  {n:"Oiseau à la Machine", r:"Épaules", g:"Épaules, Trapèzes"},
-  {n:"Oiseau à la Poulie Haute", r:"Épaules", g:"Épaules, Trapèzes"},
-  {n:"Élévation Latérale avec Haltères", r:"Épaules", g:"Épaules, Trapèzes"},
-  {n:"Développé avec Haltères, Assis", r:"Épaules", g:"Épaules, Extenseurs des bras"},
-  {n:"Tirage Vertical à la Barre", r:"Épaules", g:"Épaules, Trapèzes"},
-  {n:"Tirage au Visage à la Poulie Basse, Assis", r:"Épaules", g:"Épaules, Trapèzes"},
-  {n:"Tirage au Visage à la Poulie Haute", r:"Épaules", g:"Épaules, Trapèzes"},
-  {n:"Développé incliné à la barre, prise serrée", r:"Pectoraux", g:"Épaules, Pectoraux"},
-  {n:"Cable Fly", r:"Pectoraux", g:"Pectoraux"},
-  {n:"Lifefitness Pec Fly", r:"Pectoraux", g:"Pectoraux"},
-  {n:"Pec Fly", r:"Pectoraux", g:"Pectoraux"},
-  {n:"Écarté Incliné avec Haltères", r:"Pectoraux", g:"Pectoraux"},
-  {n:"Écarté avec Haltères", r:"Pectoraux", g:"Pectoraux"},
-  {n:"Écarté à la Machine", r:"Pectoraux", g:"Pectoraux"},
-  {n:"Écarté à la Poulie", r:"Pectoraux", g:"Pectoraux"},
-  {n:"Écarté à la Poulie Basse", r:"Pectoraux", g:"Pectoraux"},
-  {n:"Écarté à la Poulie Haute", r:"Pectoraux", g:"Pectoraux"},
-  {n:"Développé Incliné à la Machine", r:"Pectoraux", g:"Pectoraux, Épaules"},
-  {n:"Eleiko Seated chest fly", r:"Pectoraux", g:"Pectoraux, Épaules"},
-  {n:"Incline Bench Machine Gym80", r:"Pectoraux", g:"Pectoraux, Épaules"},
-  {n:"Chest Press Technogym", r:"Pectoraux", g:"Pectoraux, Épaules"},
-  {n:"Développé Couché à la Barre", r:"Pectoraux", g:"Pectoraux, Épaules"},
-  {n:"Développé Incliné avec Haltères", r:"Pectoraux", g:"Pectoraux, Épaules"},
-  {n:"Développé Incliné à la Barre", r:"Pectoraux", g:"Pectoraux, Épaules"},
-  {n:"Développé Incliné à la Smith Machine", r:"Pectoraux", g:"Pectoraux, Épaules"},
-  {n:"Pompes", r:"Pectoraux", g:"Pectoraux, Épaules"},
-  {n:"Développé Couché à la Machine", r:"Pectoraux", g:"Pectoraux, Extenseurs des bras"},
-  {n:"Pull-Over avec Haltère", r:"Pectoraux", g:"Pectoraux, Muscles dorsaux"},
-  {n:"Pull-up (neutral grip)", r:"Dos", g:""},
-  {n:"Haussement d'Épaules avec Haltères", r:"Dos", g:"Trapèzes"},
-  {n:"Haussement d'Épaules à la Barre Hexagonale", r:"Dos", g:"Trapèzes"},
-  {n:"Rowing Incliné avec Haltères", r:"Dos", g:"Trapèzes, Muscles dorsaux"},
-  {n:"Rowing à la Barre T, Couché", r:"Dos", g:"Trapèzes, Muscles dorsaux"},
-  {n:"Rowing à la Barre, Buste Penché", r:"Dos", g:"Trapèzes, Muscles dorsaux"},
-  {n:"Rowing à Un Bras avec Haltère, Buste Penché", r:"Dos", g:"Trapèzes, Muscles dorsaux"},
-  {n:"Ring pull-ups", r:"Dos", g:"Trapèzes, Muscles dorsaux"},
-  {n:"Single Arm Iso Row", r:"Dos", g:"Trapèzes, Muscles dorsaux"},
-  {n:"Tirage Poitrine à la Poulie Haute, Prise Large", r:"Dos", g:"Trapèzes, Muscles dorsaux"},
-  {n:"Traction à la Barre Fixe", r:"Dos", g:"Trapèzes, Muscles dorsaux"},
-  {n:"Helms row", r:"Dos", g:"Muscles dorsaux"},
-  {n:"Standing Cable Pullover", r:"Dos", g:"Muscles dorsaux"},
-  {n:"Wide Neutral Pulldown", r:"Dos", g:"Muscles dorsaux"},
-  {n:"Rowing à la Barre, Buste Penché, Prise Inversée", r:"Dos", g:"Muscles dorsaux"},
-  {n:"Rowing à la Machine, Assis", r:"Dos", g:"Muscles dorsaux"},
-  {n:"Tirage Poitrine à la Poulie Haute, Prise Serrée", r:"Dos", g:"Muscles dorsaux"},
-  {n:"Traction à la Barre Fixe, Prise Serrée", r:"Dos", g:"Muscles dorsaux"},
-  {n:"Iso-Lateral High Row", r:"Dos", g:"Muscles dorsaux"},
-  {n:"Inverted Row", r:"Dos", g:"Muscles dorsaux"},
-  {n:"Low Pull", r:"Dos", g:"Muscles dorsaux"},
-  {n:"Pull-up Neutral Fat Grip", r:"Dos", g:"Muscles dorsaux"},
-  {n:"Rowing A La Poulie Basse A Un Bras", r:"Dos", g:"Muscles dorsaux"},
-  {n:"Single Arm High Row (Cable)", r:"Dos", g:"Muscles dorsaux"},
-  {n:"Traction à la Barre Fixe, Prise Inversée", r:"Dos", g:"Muscles dorsaux, Fléchisseurs des bras"},
-  {n:"Soulevé de Terre Roumain à la Barre", r:"Dos", g:"Muscles lombaires, Fessiers, Ischio-jambiers"},
-  {n:"Dips aux Barres Parallèles", r:"Bras", g:"Pectoraux, Extenseurs des bras"},
-  {n:"Développé Couché à la Barre, Prise Serrée", r:"Bras", g:"Pectoraux, Extenseurs des bras"},
-  {n:"Extension des Triceps avec Un Haltère, Assis", r:"Bras", g:"Extenseurs des bras"},
-  {n:"Extension des Triceps à la Poulie Basse, Debout", r:"Bras", g:"Extenseurs des bras"},
-  {n:"Extension des Triceps à la Poulie Haute", r:"Bras", g:"Extenseurs des bras"},
-  {n:"Leaning Overhead Extension (rope)", r:"Bras", g:"Extenseurs des bras"},
-  {n:"Curl Alterné avec Haltères, Prise Marteau", r:"Bras", g:"Fléchisseurs des bras"},
-  {n:"Curl Incliné avec Haltères", r:"Bras", g:"Fléchisseurs des bras"},
   {n:"Curl Pupitre à Un Bras avec Haltère, Debout", r:"Bras", g:"Fléchisseurs des bras"},
-  {n:"Curl Pupitre à la Machine", r:"Bras", g:"Fléchisseurs des bras"},
   {n:"Curl à la Barre", r:"Bras", g:"Fléchisseurs des bras"},
-  {n:"Curl à la Poulie Basse, Prise Marteau", r:"Bras", g:"Fléchisseurs des bras"},
-  {n:"Curl à la Barre, Prise Inversée", r:"Bras", g:"Extenseurs des poignets, Fléchisseurs des bras"},
-  {n:"Planche", r:"Abdominaux", g:"Muscles lombaires, Abdominaux, Obliques"},
-  {n:"Relevé de Jambes à la Machine", r:"Abdominaux", g:"Abdominaux"},
-  {n:"Relevé du Buste Incliné", r:"Abdominaux", g:"Abdominaux"},
-  {n:"Fente avec Haltères", r:"Fessiers", g:"Fessiers, Quadriceps"},
-  {n:"Squat Devant à la Barre", r:"Jambes", g:"Fessiers, Quadriceps"},
+  {n:"Rowing à la Barre, Buste Penché, Prise Inversée", r:"Dos", g:"Muscles dorsaux"},
+  {n:"Pull-Over avec Haltère", r:"Pectoraux", g:"Pectoraux, Muscles dorsaux"},
+  {n:"Haussement d'Épaules à la Barre Hexagonale", r:"Dos", g:"Trapèzes"},
+  {n:"Développé Couché à la Barre", r:"Pectoraux", g:"Pectoraux, Épaules"},
+  {n:"Développé avec Haltères, Assis", r:"Épaules", g:"Épaules, Extenseurs des bras"},
+  {n:"Dips aux Barres Parallèles", r:"Bras", g:"Pectoraux, Extenseurs des bras"},
+  {n:"Extension des Triceps à la Poulie Haute", r:"Bras", g:"Extenseurs des bras"},
   {n:"Squat à la Barre", r:"Jambes", g:"Fessiers, Quadriceps"},
-  {n:"Hack Squat à la Machine", r:"Jambes", g:"Fessiers, Quadriceps"},
+  {n:"Soulevé de Terre Roumain à la Barre", r:"Dos", g:"Muscles lombaires, Fessiers, Ischio-jambiers"},
   {n:"Presse des Jambes à Une Jambe, Assis", r:"Jambes", g:"Quadriceps"},
-  {n:"Flexion des Jambes, Assis", r:"Jambes", g:"Ischio-jambiers"}
+  {n:"Flexion des Jambes, Assis", r:"Jambes", g:"Ischio-jambiers"},
+  {n:"Planche", r:"Abdominaux", g:"Muscles lombaires, Abdominaux, Obliques"},
+  {n:"Traction à la Barre Fixe", r:"Dos", g:"Trapèzes, Muscles dorsaux"}
 ];
 
 (function(){
   var $=function(s,r){return (r||document).querySelector(s)};
   var LS_KEY='carnet-muscu.v1';
-  var state={tab:'entrainements', prevTab:null, sessions:[], cur:null,templates:[],loaded:false,currentExoIdx:null,currentSession:null,chat:[], selectedExerciseDetail:null, selectedSessionId:null, sessionStartTime:null};
+  var state={tab:'entrainements', sessions:[], cur:null,templates:[],loaded:false,currentExoIdx:null,currentSession:null,chat:[], selectedExerciseDetail:null, selectedSessionId:null};
   var currentDate = new Date();
   var calMonth = currentDate.getMonth();
   var calYear = currentDate.getFullYear();
-  
-  var timerInt = null;
-  var timerSec = 0;
-  var timerRunning = false;
-  var undoTimer = null;
-  var lastDeletedSet = null;
+  var timerInt = null; var timerSec = 0; var timerRunning = false;
 
   function haptic() { if (navigator.vibrate) navigator.vibrate(10); }
   function uid8(){return Math.random().toString(36).slice(2,10)}
@@ -332,30 +183,9 @@ var EXERCISES_DB = [
       "presse des jambes à une jambe, assis": "single-leg-press",
       "flexion des jambes, assis": "seated-leg-curl",
       "planche": "plank",
-      "traction à la barre fixe": "pull-up",
-      "hack squat à la machine": "hack-squat",
-      "fente avec haltères": "dumbbell-lunge",
-      "pec fly": "cable-fly",
-      "écarté avec haltères": "dumbbell-fly",
-      "développé incliné à la barre": "incline-barbell-press",
-      "pompes": "push-up"
+      "traction à la barre fixe": "pull-up"
     };
     return mapping[exerciseName.toLowerCase().trim()] || null;
-  }
-
-  function showToast(msg, actionText, onAction) {
-    var toast = $('#toast');
-    toast.innerHTML = `<span>${esc(msg)}</span>` + (actionText ? `<button data-act="toast-action" id="toast-btn">${esc(actionText)}</button>` : '');
-    toast.hidden = false;
-    if (actionText) {
-      $('#toast-btn').onclick = function() {
-        onAction();
-        toast.hidden = true;
-        if (undoTimer) clearTimeout(undoTimer);
-      };
-    }
-    if (undoTimer) clearTimeout(undoTimer);
-    undoTimer = setTimeout(function() { toast.hidden = true; }, 5000);
   }
 
   function initStore(){
@@ -376,7 +206,6 @@ var EXERCISES_DB = [
   function saveTemplates(){try{localStorage.setItem('carnet-muscu.templates',JSON.stringify(state.templates))}catch(e){}}
 
   async function getSample(){
-    if (!navigator.onLine) throw new Error("Vous êtes hors ligne. Le coach nécessite une connexion.");
     return async function(prompt, options){
       const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt }) });
       if (!res.ok) throw new Error('Erreur API');
@@ -402,43 +231,24 @@ var EXERCISES_DB = [
     };
   }
 
-  // --- RENDU : ENTRAINEMENTS ---
   function renderEntrainements(){
-    var el = $('#v-entrainements');
-    var today = new Date();
-    
+    var el = $('#v-entrainements'); var today = new Date();
     var pastSessionsHtml = state.sessions.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(function(s, i){
       var d = parseDate(s.date);
-      return `
-        <div class="row cascade-item" style="animation-delay: ${i * 0.05}s">
-          <div class="r-left" data-act="open-session" data-id="${s.id}"><div class="r-title">${esc(s.title)}</div><div class="r-sub">${d.toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long'})}</div></div>
-          <div class="r-right"><button class="icon-btn" data-act="copy-session" data-id="${s.id}" title="Refaire">📄</button></div>
-        </div>
-      `;
+      return `<div class="row" style="animation-delay: ${i * 0.05}s" data-act="open-session" data-id="${s.id}"><div class="r-left"><div class="r-title">${esc(s.title)}</div><div class="r-sub">${d.toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long'})}</div></div><div class="r-right"><div class="chevron">›</div></div></div>`;
     }).join('');
-
     var tplsHtml = state.templates.map(function(t, i){
       var lastDone = state.sessions.filter(s => s.title === t.title).sort((a,b)=>b.date.localeCompare(a.date))[0];
       var daysAgo = 'Nouveau';
-      if(lastDone){
-        var diff = Math.floor((today - parseDate(lastDone.date)) / (1000 * 60 * 60 * 24));
-        daysAgo = diff === 0 ? "Auj." : diff + " j";
-      }
-      return `
-        <div class="row cascade-item" style="animation-delay: ${(state.sessions.length + i) * 0.05}s">
-          <div class="r-left" data-act="start-tpl" data-id="${t.id}"><div class="r-title">${esc(t.title)}</div><div class="r-sub">${esc(t.desc)}</div></div>
-          <div class="r-right"><div class="badge-jours"><span class="check">✓</span> ${daysAgo}</div><button class="icon-btn" data-act="delete-tpl" data-id="${t.id}" style="color:var(--danger); font-size:16px;">✕</button></div>
-        </div>
-      `;
+      if(lastDone){ var diff = Math.floor((today - parseDate(lastDone.date)) / (1000 * 60 * 60 * 24)); daysAgo = diff === 0 ? "Auj." : diff + " j"; }
+      return `<div class="row" style="animation-delay: ${(state.sessions.length + i) * 0.05}s" data-act="start-tpl" data-id="${t.id}"><div class="r-left"><div class="r-title">${esc(t.title)}</div><div class="r-sub">${esc(t.desc)}</div></div><div class="r-right"><div class="badge-jours"><span class="check">✓</span> ${daysAgo}</div><div class="chevron">›</div></div></div>`;
     }).join('');
-
     var html = `<div class="head"><div><h1>Entraînements</h1><div class="line"></div></div><button class="btn primary" data-act="open-new-session-modal" style="padding: 0 12px; min-height: 36px; border-radius: 18px; font-size: 14px; margin-bottom: 8px;">+ Séance</button></div>`;
     if (state.sessions.length > 0) html += `<h2 style="font-size:16px; text-transform:uppercase; color:var(--muted); margin: 20px 0 8px 8px;">Historique récent</h2><div class="card">${pastSessionsHtml}</div>`;
     html += `<h2 style="font-size:16px; text-transform:uppercase; color:var(--muted); margin: 20px 0 8px 8px;">Modèles</h2><div class="card">${tplsHtml}</div>`;
     el.innerHTML = html;
   }
 
-  // --- RENDU : EXERCICES ---
   function renderExercices(){
     var groups = {};
     EXERCISES_DB.forEach(function(ex) { if (!groups[ex.r]) groups[ex.r] = []; groups[ex.r].push(ex); });
@@ -453,250 +263,97 @@ var EXERCISES_DB = [
     $('#v-exercices').innerHTML = `<div class="head"><h1>Exercices</h1><div class="line"></div></div><div style="margin-bottom:16px">${html}</div>`;
   }
 
-  // --- RENDU : EX-DETAIL ---
   function renderExDetail(){
-    var el = $('#v-exo-detail');
-    var exName = state.selectedExerciseDetail;
-    if(!exName) return;
-
-    var sessionsWithEx = state.sessions.filter(s => s.exercises.some(e => e.name === exName));
-    var countSessions = sessionsWithEx.length;
-    var countSets = sessionsWithEx.reduce((acc, s) => { var ex = s.exercises.find(e => e.name === exName); return acc + (ex ? ex.sets.length : 0); }, 0);
-    
-    // Calcul du PR et du meilleur volume
-    var pr = 0, bestVol = 0;
-    sessionsWithEx.forEach(s => {
-      var ex = s.exercises.find(e => e.name === exName);
-      var vol = 0;
-      ex.sets.forEach(set => {
-        var w = (set.reps || 0) * (set.kg || 0);
-        if (w > pr) pr = w;
-        vol += w;
-      });
-      if (vol > bestVol) bestVol = vol;
-    });
-
+    var el = $('#v-exo-detail'); var exName = state.selectedExerciseDetail; if(!exName) return;
+    var countSessions = state.sessions.filter(s => s.exercises.some(e => e.name === exName)).length;
+    var countSets = state.sessions.reduce((acc, s) => { var ex = s.exercises.find(e => e.name === exName); return acc + (ex ? ex.sets.length : 0); }, 0);
     var imgName = getRepDbImageName(exName);
     var imgHtml = imgName ? `<img src="https://repdb.co/images/exercises/${imgName}.webp" onerror="this.style.display='none'; this.parentNode.innerHTML='🏋️';">` : '🏋️';
-
     el.innerHTML = `
       <div class="session-header"><button class="icon-btn" data-act="tab" data-tab="exercices"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button></div>
-      <div class="ex-detail-hero">${imgHtml}<h1 style="margin:0; font-size:24px; line-height:1.2;">${esc(exName)}</h1></div>
-      <div class="ex-detail-stats">
-        <div class="ex-detail-stat"><div class="val">${countSessions}</div><div class="lbl">Entraînements</div></div>
-        <div class="ex-detail-stat"><div class="val">${countSets}</div><div class="lbl">Journaux</div></div>
-        <div class="ex-detail-stat" style="flex:1 1 100%"><div class="val">${pr > 0 ? Math.round(pr)+' kg' : '—'}</div><div class="lbl">Record (Volume d'une série)</div></div>
+      <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px;"><div class="ex-illu" style="width:80px; height:80px;">${imgHtml}</div><h1 style="margin:0; font-size:24px; line-height:1.2;">${esc(exName)}</h1></div>
+      <div style="display:flex; gap:12px; margin-bottom:20px;">
+        <div style="flex:1; background:var(--surface); border-radius:12px; padding:12px; text-align:center;"><div style="font-size:20px; font-weight:800; color:var(--accent);">${countSessions}</div><div style="font-size:11px;">Entraînements</div></div>
+        <div style="flex:1; background:var(--surface); border-radius:12px; padding:12px; text-align:center;"><div style="font-size:20px; font-weight:800; color:var(--accent);">${countSets}</div><div style="font-size:11px;">Journaux (séries)</div></div>
       </div>
-      <div class="foot-actions" style="display:flex; flex-direction:column; gap:12px; margin-top:20px;">
+      <div style="display:flex; flex-direction:column; gap:12px; margin-top:20px;">
         <button class="btn primary" style="width:100%" data-act="add-ex-to-session">Ajouter à un entraînement</button>
-        <button class="btn" style="width:100%" data-act="open-journal-modal">Ajouter un journal</button>
+        <button class="btn" style="width:100%" data-act="add-ex-journal">Ajouter un journal</button>
       </div>
     `;
   }
 
-  // --- RENDU : HISTORIQUE ---
   function renderHistorique(){
     var el = $('#v-historique');
     var monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
     var firstDay = new Date(calYear, calMonth, 1).getDay();
     var daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
     var offset = (firstDay === 0 ? 6 : firstDay - 1);
-
     var daysHtml = '';
     for (var i = 0; i < offset; i++) daysHtml += '<div></div>';
     for (var d = 1; d <= daysInMonth; d++) {
       var dateStr = calYear + '-' + pad(calMonth+1) + '-' + pad(d);
       var sessionOnDay = state.sessions.find(s => s.date === dateStr);
       var title = sessionOnDay ? sessionOnDay.title : '';
-      daysHtml += `
-        <div class="cal-day ${sessionOnDay ? 'has-workout' : 'empty'}" ${sessionOnDay ? `data-act="view-session-summary" data-id="${sessionOnDay.id}"` : `data-act="create-session-at-date" data-date="${dateStr}"`}>
-          <span>${d}</span>
-          ${title ? `<span class="cal-title">${esc(title)}</span>` : ''}
-        </div>
-      `;
+      daysHtml += `<div class="cal-day ${sessionOnDay ? 'has-workout' : ''}" ${sessionOnDay ? `data-act="view-session-summary" data-id="${sessionOnDay.id}"` : ''}><span>${d}</span>${title ? `<span style="font-size:8px; font-weight:600; color:var(--accent); text-transform:uppercase; margin-top:2px;">${esc(title)}</span>` : ''}</div>`;
     }
-
-    el.innerHTML = `
-      <div class="head"><h1>Historique</h1><div class="line"></div></div>
-      <div class="cal">
-        <div class="cal-head"><button data-act="cal-prev">‹</button><div style="font-weight:700; font-size:18px">${monthNames[calMonth]} ${calYear}</div><button data-act="cal-next">›</button></div>
-        <div class="cal-grid"><div class="cal-day-name">L</div><div class="cal-day-name">M</div><div class="cal-day-name">M</div><div class="cal-day-name">J</div><div class="cal-day-name">V</div><div class="cal-day-name">S</div><div class="cal-day-name">D</div>${daysHtml}</div>
-      </div>
-    `;
+    el.innerHTML = `<div class="head"><h1>Historique</h1><div class="line"></div></div><div class="cal"><div class="cal-head"><button data-act="cal-prev">‹</button><div style="font-weight:700; font-size:18px">${monthNames[calMonth]} ${calYear}</div><button data-act="cal-next">›</button></div><div class="cal-grid"><div class="cal-day-name">L</div><div class="cal-day-name">M</div><div class="cal-day-name">M</div><div class="cal-day-name">J</div><div class="cal-day-name">V</div><div class="cal-day-name">S</div><div class="cal-day-name">D</div>${daysHtml}</div></div>`;
   }
 
-  // --- RENDU : SESSION SUMMARY ---
   function renderSessionSummary(){
-    var el = $('#v-session-summary');
-    var s = state.sessions.find(x => x.id === state.selectedSessionId);
-    if(!s) return;
-
+    var el = $('#v-session-summary'); var s = state.sessions.find(x => x.id === state.selectedSessionId); if(!s) return;
     var totalReps = 0, totalWeight = 0;
     s.exercises.forEach(ex => { ex.sets.forEach(set => { totalReps += (set.reps || 0); totalWeight += ((set.reps || 0) * (set.kg || 0)); }); });
-    
     var totalSets = s.exercises.reduce((acc, ex) => acc + ex.sets.length, 0);
-    var durationMins = s.durationMins || (totalSets * 3); 
-    var durationTxt = durationMins > 60 ? Math.floor(durationMins/60) + 'h ' + (durationMins%60) + 'm' : durationMins + 'm';
-
-    var exosHtml = s.exercises.map(ex => {
-      return `<div class="row"><div class="r-left"><div class="r-title">${esc(ex.name)}</div><div class="r-sub">${ex.sets.map(set => `${set.reps}×${set.kg||0}kg`).join(' · ')}</div></div></div>`;
-    }).join('');
-
-    el.innerHTML = `
-      <div class="session-header"><button class="icon-btn" data-act="tab" data-tab="historique"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button></div>
-      <div class="head" style="margin-top:10px;"><h1>${esc(s.title)}</h1><div class="sub">${parseDate(s.date).toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'})}</div><div class="line"></div></div>
-      <div class="ex-detail-stats" style="flex-wrap:wrap">
-        <div class="ex-detail-stat" style="flex:1 1 40%"><div class="val">${durationTxt}</div><div class="lbl">Durée</div></div>
-        <div class="ex-detail-stat" style="flex:1 1 40%"><div class="val">${totalSets}</div><div class="lbl">Séries</div></div>
-        <div class="ex-detail-stat" style="flex:1 1 40%"><div class="val">${totalReps}</div><div class="lbl">Reps totales</div></div>
-        <div class="ex-detail-stat" style="flex:1 1 40%"><div class="val">${Math.round(totalWeight)} kg</div><div class="lbl">Volume total</div></div>
-      </div>
-      <h2 style="font-size:16px; text-transform:uppercase; color:var(--muted); margin: 20px 0 8px 8px;">Exercices</h2>
-      <div class="card">${exosHtml}</div>
-    `;
-  }
-
-  // --- RENDU : STATS ---
-  function renderStats(){
-    var el = $('#v-stats');
-    var totalSessions = state.sessions.length;
-    var totalWeight = 0, totalReps = 0, totalSets = 0;
-    var exCount = {};
-    state.sessions.forEach(s => {
-      s.exercises.forEach(ex => {
-        exCount[ex.name] = (exCount[ex.name] || 0) + 1;
-        ex.sets.forEach(set => { totalWeight += (set.reps||0)*(set.kg||0); totalReps += (set.reps||0); totalSets++; });
-      });
-    });
-    var topEx = Object.keys(exCount).sort((a,b)=>exCount[b]-exCount[a])[0] || '—';
-    
-    // Calcul du streak (jours consécutifs d'entraînement)
-    var dates = [...new Set(state.sessions.map(s=>s.date))].sort().reverse();
-    var streak = 0;
-    var checkDate = new Date();
-    for (var i=0; i<dates.length; i++) {
-      var d = parseDate(dates[i]);
-      var diff = Math.floor((checkDate - d) / (1000*60*60*24));
-      if (diff <= 1) { streak++; checkDate = d; } else break;
-    }
-
-    el.innerHTML = `
-      <div class="head"><div><h1>Statistiques</h1><div class="line"></div></div><button class="icon-btn" data-act="tab" data-tab="reglages">✕</button></div>
-      <div class="ex-detail-stats" style="flex-wrap:wrap">
-        <div class="ex-detail-stat" style="flex:1 1 40%"><div class="val">${totalSessions}</div><div class="lbl">Séances</div></div>
-        <div class="ex-detail-stat" style="flex:1 1 40%"><div class="val">${Math.round(totalWeight/1000)} t</div><div class="lbl">Volume total</div></div>
-        <div class="ex-detail-stat" style="flex:1 1 40%"><div class="val">${totalReps}</div><div class="lbl">Reps totales</div></div>
-        <div class="ex-detail-stat" style="flex:1 1 40%"><div class="val">${totalSets}</div><div class="lbl">Séries totales</div></div>
-        <div class="ex-detail-stat" style="flex:1 1 100%"><div class="val">${streak} j</div><div class="lbl">Série de jours consécutifs</div></div>
-      </div>
-      <h2 style="font-size:16px; text-transform:uppercase; color:var(--muted); margin: 20px 0 8px 8px;">Exercice le plus fait</h2>
-      <div class="card"><div class="row"><div class="r-left"><div class="r-title">${esc(topEx)}</div><div class="r-sub">${exCount[topEx]||0} séances</div></div></div></div>
-    `;
+    var durationMins = totalSets * 3; var durationTxt = durationMins > 60 ? Math.floor(durationMins/60) + 'h ' + (durationMins%60) + 'm' : durationMins + 'm';
+    var exosHtml = s.exercises.map(ex => `<div class="row"><div class="r-left"><div class="r-title">${esc(ex.name)}</div><div class="r-sub">${ex.sets.map(set => `${set.reps}×${set.kg||0}kg`).join(' · ')}</div></div></div>`).join('');
+    el.innerHTML = `<div class="session-header"><button class="icon-btn" data-act="tab" data-tab="historique"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button></div><div class="head" style="margin-top:10px;"><h1>${esc(s.title)}</h1><div class="sub">${parseDate(s.date).toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'})}</div><div class="line"></div></div><div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px;"><div style="flex:1 1 40%; background:var(--surface); border-radius:12px; padding:12px; text-align:center;"><div style="font-size:20px; font-weight:800; color:var(--accent);">${durationTxt}</div><div style="font-size:11px;">Durée</div></div><div style="flex:1 1 40%; background:var(--surface); border-radius:12px; padding:12px; text-align:center;"><div style="font-size:20px; font-weight:800; color:var(--accent);">${totalSets}</div><div style="font-size:11px;">Séries</div></div><div style="flex:1 1 40%; background:var(--surface); border-radius:12px; padding:12px; text-align:center;"><div style="font-size:20px; font-weight:800; color:var(--accent);">${totalReps}</div><div style="font-size:11px;">Reps</div></div><div style="flex:1 1 40%; background:var(--surface); border-radius:12px; padding:12px; text-align:center;"><div style="font-size:20px; font-weight:800; color:var(--accent);">${Math.round(totalWeight)} kg</div><div style="font-size:11px;">Volume</div></div></div><h2 style="font-size:16px; text-transform:uppercase; color:var(--muted); margin: 20px 0 8px 8px;">Exercices</h2><div class="card">${exosHtml}</div>`;
   }
 
   function renderMensurations(){ $('#v-mensurations').innerHTML = `<div class="head"><h1>Mensurations</h1><div class="line"></div></div><div class="card"><div class="row"><div class="r-left"><div class="r-title">Poids</div></div><div class="r-right"><div class="r-sub">83,70 kg</div></div></div></div>`; }
-
-  function renderReglages(){
-    $('#v-reglages').innerHTML = `
-      <div class="head"><h1>Réglages</h1><div class="line"></div></div>
-      <div class="card"><div class="row" data-act="tab" data-tab="stats"><div class="r-left"><div class="r-title">Statistiques</div></div><div class="chevron">›</div></div></div>
-      <div class="card"><div class="row" data-act="tab" data-tab="coach"><div class="r-left"><div class="r-title">Coach IA</div></div><div class="chevron">›</div></div></div>
-      <div class="card"><div class="row" data-act="switch-theme"><div class="r-left"><div class="r-title">Thème</div></div><div class="r-sub">Auto / Clair / Sombre</div></div></div>
-      <div class="card"><div class="row" style="display:block; text-align:center; color:var(--muted); font-size:12px;">Images : RepDB</div></div>
-    `;
-  }
+  function renderReglages(){ $('#v-reglages').innerHTML = `<div class="head"><h1>Réglages</h1><div class="line"></div></div><div class="card"><div class="row" data-act="tab" data-tab="coach"><div class="r-left"><div class="r-title">Coach IA</div></div><div class="chevron">›</div></div></div>`; }
 
   function renderSeance(){
-    var el = $('#v-seance');
-    if(!state.currentSession) return;
-
+    var el = $('#v-seance'); if(!state.currentSession) return;
     var exHtml = state.currentSession.exercises.map(function(ex, i){
-      var setsCount = ex.sets.length;
-      var minReps = Math.min(...ex.sets.map(s=>s.reps||0));
-      var maxReps = Math.max(...ex.sets.map(s=>s.reps||0));
-      var maxKg = Math.max(...ex.sets.map(s=>s.kg||0));
-      var rangeReps = minReps === maxReps ? `${maxReps}` : `${minReps}-${maxReps}`;
-      var imgName = getRepDbImageName(ex.name);
-      var imgHtml = imgName ? `<img src="https://repdb.co/images/exercises/${imgName}.webp" onerror="this.style.display='none'; this.parentNode.innerHTML='🏋️';">` : '🏋️';
-      
-      return `
-        <div class="ex-row cascade-item" style="animation-delay: ${i * 0.05}s" data-act="open-exo-detail-session" data-index="${i}">
-          <div class="ex-illu">${imgHtml}</div>
-          <div class="ex-info"><div class="ex-title">${esc(ex.name)}</div><div class="ex-sub">${setsCount} séries • ${rangeReps} reps • ${maxKg > 0 ? maxKg.toFixed(2)+' kg' : 'Poids du corps'}</div></div>
-          <div class="chevron">›</div>
-        </div>
-      `;
+      var setsCount = ex.sets.length; var minReps = Math.min(...ex.sets.map(s=>s.reps||0)); var maxReps = Math.max(...ex.sets.map(s=>s.reps||0)); var maxKg = Math.max(...ex.sets.map(s=>s.kg||0)); var rangeReps = minReps === maxReps ? `${maxReps}` : `${minReps}-${maxReps}`;
+      var imgName = getRepDbImageName(ex.name); var imgHtml = imgName ? `<img src="https://repdb.co/images/exercises/${imgName}.webp" onerror="this.style.display='none'; this.parentNode.innerHTML='🏋️';">` : '🏋️';
+      return `<div class="ex-row" data-act="open-exo-detail-session" data-index="${i}"><div class="ex-illu">${imgHtml}</div><div class="ex-info"><div class="ex-title">${esc(ex.name)}</div><div class="ex-sub">${setsCount} séries • ${rangeReps} reps • ${maxKg > 0 ? maxKg.toFixed(2)+' kg' : 'Poids du corps'}</div></div><div class="chevron">›</div></div>`;
     }).join('');
-
-    el.innerHTML = `
-      <div class="session-header"><button class="icon-btn" data-act="tab" data-tab="entrainements"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button><button class="btn primary" style="padding:0 12px; min-height:36px;" data-act="finish-session">Terminer</button></div>
-      <h1 class="head" style="font-size:36px; margin-bottom:20px;">${esc(state.currentSession.title)}<br><span style="font-size:16px; color:var(--muted); font-weight:500; margin-top:8px; display:inline-block;">${parseDate(state.currentSession.date).toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'})}</span></h1>
-      <div style="display:flex; gap:8px; margin-bottom:16px;"><button class="btn" data-act="save-as-template" style="flex:1">Sauvegarder comme modèle</button></div>
-      <div class="card">${exHtml}</div>
-    `;
+    el.innerHTML = `<div class="session-header"><button class="icon-btn" data-act="tab" data-tab="entrainements"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button><button class="btn primary" style="padding:0 12px; min-height:36px;" data-act="finish-session">Terminer</button></div><h1 class="head" style="font-size:36px; margin-bottom:20px;">${esc(state.currentSession.title)}<br><span style="font-size:16px; color:var(--muted); font-weight:500; margin-top:8px; display:inline-block;">${parseDate(state.currentSession.date).toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'})}</span></h1><div class="card">${exHtml}</div>`;
   }
 
   function renderExoDetailSession(){
-    var el = $('#v-exo-detail');
-    if(state.currentExoIdx === null || !state.currentSession) return;
+    var el = $('#v-exo-detail'); if(state.currentExoIdx === null || !state.currentSession) return;
     var ex = state.currentSession.exercises[state.currentExoIdx];
-    var pastSessions = state.sessions.filter(s => s.exercises.some(e => e.name === ex.name)).sort((a,b)=>b.date.localeCompare(a.date));
-    
-    // Trouver le PR
-    var pr = 0;
-    pastSessions.forEach(ps => { var pex = ps.exercises.find(e => e.name === ex.name); pex.sets.forEach(s => { var w=(s.reps||0)*(s.kg||0); if(w>pr) pr=w; }); });
-
+    var pastSessions = state.sessions.filter(s => s.exercises.some(e => e.name === ex.name)).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,3);
     var setsHtml = ex.sets.map(function(s, j){
-      var historyLines = pastSessions.slice(0,3).map(ps => { var pex = ps.exercises.find(e => e.name === ex.name); var pset = pex.sets[j]; if(!pset) return ''; return `<div><u>${fmtShort(ps.date)}</u> ${pset.reps}×${Number(pset.kg).toFixed(2)}kg</div>`; }).join('');
-      return `
-        <div class="set-history-row">
-          <div class="set-circle">${j+1}</div>
-          <div class="set-inputs">
-            <input type="text" inputmode="numeric" value="${s.reps||''}" data-set-index="${j}" data-field="reps" placeholder="Reps">
-            <input type="text" inputmode="decimal" value="${s.kg||''}" data-set-index="${j}" data-field="kg" placeholder="Kg">
-            <input type="text" inputmode="text" value="${s.n||''}" data-set-index="${j}" data-field="n" placeholder="RIR">
-          </div>
-          <div class="set-history-text">${historyLines || ''}</div>
-          <button class="icon-btn" data-act="delete-set-session" data-set-index="${j}" style="color:var(--danger); font-size:16px; width:24px;">✕</button>
-        </div>
-      `;
+      var historyLines = pastSessions.map(ps => { var pex = ps.exercises.find(e => e.name === ex.name); var pset = pex.sets[j]; if(!pset) return ''; return `<div><u>${fmtShort(ps.date)}</u> ${pset.reps}×${Number(pset.kg).toFixed(2)}kg</div>`; }).join('');
+      return `<div class="set-history-row"><div class="set-circle">${j+1}</div><div class="set-inputs"><input type="text" inputmode="numeric" value="${s.reps||''}" data-set-index="${j}" data-field="reps" placeholder="Reps"><input type="text" inputmode="decimal" value="${s.kg||''}" data-set-index="${j}" data-field="kg" placeholder="Kg"></div><div class="set-history-text">${historyLines || '<span style="font-size:12px">Aucun historique</span>'}</div></div>`;
     }).join('');
-
-    // Graphique avec toutes les séances
-    var chartData = pastSessions.slice(0, 10).map(ps => { var pex = ps.exercises.find(e => e.name === ex.name); var maxKg = Math.max(...pex.sets.map(s=>s.kg||0)); return { date: fmtShort(ps.date), val: maxKg }; }).reverse();
-    var currentMaxKg = Math.max(...ex.sets.map(s=>s.kg||0));
-    if (currentMaxKg > 0) chartData.push({date: 'Auj.', val: currentMaxKg});
-
+    var chartData = pastSessions.map(ps => { var pex = ps.exercises.find(e => e.name === ex.name); var maxKg = Math.max(...pex.sets.map(s=>s.kg||0)); return { date: fmtShort(ps.date), val: maxKg }; }).reverse();
+    var currentMaxKg = Math.max(...ex.sets.map(s=>s.kg||0)); if (currentMaxKg > 0) chartData.push({date: 'Auj.', val: currentMaxKg});
     var svgHtml = '';
     if (chartData.length > 1) {
-      var maxVal = Math.max(...chartData.map(d=>d.val), pr) || 10;
+      var maxVal = Math.max(...chartData.map(d=>d.val)) || 10;
       var points = chartData.map((d, i) => { var x = (i / (chartData.length - 1)) * 280 + 10; var y = 90 - (d.val / maxVal) * 80; return {x, y, val: d.val}; });
       var path = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ');
-      var circles = points.map(p => `<circle cx="${p.x}" cy="${p.y}" r="4" fill="${p.val===pr?'var(--green)':'var(--accent)'}"/>`).join('');
-      var prY = 90 - (pr / maxVal) * 80;
-      svgHtml = `<div class="chart-container"><div style="display:flex; justify-content:space-between; color:var(--muted); font-size:12px; margin-bottom:12px"><span>Progression</span><span>Record : ${pr.toFixed(1)} kg</span></div><svg class="chart-svg" viewBox="0 0 300 100"><line x1="0" y1="${prY}" x2="300" y2="${prY}" stroke="var(--green)" stroke-width="1" stroke-dasharray="4"/><path class="chart-line" d="${path}" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>${circles}</svg></div>`;
+      var circles = points.map(p => `<circle class="chart-point" cx="${p.x}" cy="${p.y}" r="4" fill="var(--accent)"/>`).join('');
+      svgHtml = `<div class="chart-container"><div style="display:flex; justify-content:space-between; color:var(--muted); font-size:12px; margin-bottom:12px"><span>Historique</span><span>${maxVal.toFixed(1)} kg</span></div><svg class="chart-svg" viewBox="0 0 300 100"><path class="chart-line" d="${path}" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>${circles}</svg></div>`;
     }
-
-    el.innerHTML = `
-      <div class="exo-detail-header"><button class="icon-btn" data-act="back-to-session"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button><button class="icon-btn" data-act="timer-show">⏱️</button></div>
-      <div class="exo-detail-title">${esc(ex.name)}</div>
-      <div class="card" style="padding:16px;">${setsHtml}</div>
-      ${svgHtml}
-    `;
+    el.innerHTML = `<div class="exo-detail-header"><button class="icon-btn" data-act="back-to-session"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button><button class="icon-btn" data-act="timer-show">⏱️</button></div><div class="exo-detail-title">${esc(ex.name)}</div><div class="card" style="padding:16px;">${setsHtml}</div>${svgHtml}`;
     $('#timer-bar').hidden = false;
   }
 
   function renderCoach(){
-    var el = $('#v-coach');
-    var msgs = state.chat.map(m => `<div class="msg ${m.role}">${esc(m.text)}</div>`).join('');
+    var el = $('#v-coach'); var msgs = state.chat.map(m => `<div class="msg ${m.role}">${esc(m.text)}</div>`).join('');
     el.innerHTML = `<div class="head" style="display:flex; justify-content:space-between; align-items:center"><button class="btn ghost" data-act="tab" data-tab="reglages" style="padding:0">‹ Retour</button><h1 style="margin:0; font-size:20px">Coach IA</h1><div style="width:60px"></div></div><div class="chat-container" id="chatlist">${msgs || '<div class="msg bot">Bonjour ! Posez-moi une question.</div>'}</div><div style="display:flex; gap:8px; margin-top:12px"><input type="text" id="chat-in" placeholder="Votre question..." style="flex:1"><button class="btn primary" data-act="send-chat">Envoyer</button></div>`;
     var list = $('#chatlist'); if(list) list.scrollTop = list.scrollHeight;
   }
 
   function renderAll(){
-    ['entrainements','exercices','historique','mensurations','reglages','seance','exo-detail','session-summary','stats','coach'].forEach(function(t){$('#v-'+t).hidden=state.tab!==t});
+    ['entrainements','exercices','historique','mensurations','reglages','seance','exo-detail','session-summary','coach'].forEach(function(t){$('#v-'+t).hidden=state.tab!==t});
     document.querySelectorAll('nav button').forEach(function(b){ if(b.dataset.tab===state.tab) b.classList.add('active'); else b.classList.remove('active'); });
-
     if(state.tab === 'entrainements') renderEntrainements();
     else if(state.tab === 'exercices') renderExercices();
     else if(state.tab === 'historique') renderHistorique();
@@ -705,7 +362,6 @@ var EXERCISES_DB = [
     else if(state.tab === 'seance') renderSeance();
     else if(state.tab === 'exo-detail') { if (state.currentExoIdx !== null) renderExoDetailSession(); else renderExDetail(); }
     else if(state.tab === 'session-summary') renderSessionSummary();
-    else if(state.tab === 'stats') renderStats();
     else if(state.tab === 'coach') renderCoach();
   }
 
@@ -718,94 +374,33 @@ var EXERCISES_DB = [
   }
 
   document.addEventListener('click', function(ev){
-    var t = ev.target.closest('[data-act]');
-    if(!t) return;
-    haptic();
-    var act = t.dataset.act;
+    var t = ev.target.closest('[data-act]'); if(!t) return; haptic(); var act = t.dataset.act;
 
     if(act === 'tab'){ if (state.tab !== t.dataset.tab) state.prevTab = state.tab; state.tab = t.dataset.tab; if (state.tab !== 'exo-detail') $('#timer-bar').hidden = true; renderAll(); window.scrollTo(0,0); }
-    else if(act === 'switch-theme') {
-      var current = document.documentElement.getAttribute('data-theme') || 'auto';
-      var next = current === 'auto' ? 'light' : (current === 'light' ? 'dark' : 'auto');
-      if (next === 'auto') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', next);
-      showToast('Thème : ' + next);
-    }
     else if(act === 'open-new-session-modal'){ $('#modal-new-session').hidden = false; $('#new-session-name').value = ''; $('#new-session-date').value = todayStr(); }
-    else if(act === 'create-session-at-date'){ $('#modal-new-session').hidden = false; $('#new-session-name').value = ''; $('#new-session-date').value = t.dataset.date; }
-    else if(act === 'close-modal'){ $('#modal-new-session').hidden = true; $('#modal-add-journal').hidden = true; }
+    else if(act === 'close-modal'){ $('#modal-new-session').hidden = true; }
     else if(act === 'create-session'){
       var name = $('#new-session-name').value.trim(); var date = $('#new-session-date').value;
       if(!name || !date) return;
-      state.currentSession = { id: uid8(), date: date, title: name, exercises: [], durationMins: 0 };
-      state.currentExoIdx = null; state.sessionStartTime = Date.now(); $('#modal-new-session').hidden = true; state.tab = 'seance'; renderAll();
+      state.currentSession = { id: uid8(), date: date, title: name, exercises: [] }; state.currentExoIdx = null; $('#modal-new-session').hidden = true; state.tab = 'seance'; renderAll();
     }
     else if(act === 'start-tpl'){
-      var tpl = state.templates.find(x => x.id === t.dataset.id);
-      var chosenDate = todayStr();
-      var ns = { id: uid8(), date: chosenDate, title: tpl.title, exercises: [], durationMins: 0 };
-      tpl.exercises.forEach(function(exName){
-        var h = state.sessions.flatMap(s => s.exercises).filter(e => e.name === exName)[0];
-        ns.exercises.push({name: exName, sets: [{reps: h?.sets[0]?.reps || 10, kg: h?.sets[0]?.kg || 0}, {reps: h?.sets[1]?.reps || 10, kg: h?.sets[1]?.kg || 0}]});
-      });
-      state.currentSession = ns; state.currentExoIdx = null; state.sessionStartTime = Date.now(); state.tab = 'seance'; renderAll();
+      var tpl = state.templates.find(x => x.id === t.dataset.id); var chosenDate = todayStr();
+      var ns = { id: uid8(), date: chosenDate, title: tpl.title, exercises: [] };
+      tpl.exercises.forEach(function(exName){ var h = state.sessions.flatMap(s => s.exercises).filter(e => e.name === exName)[0]; ns.exercises.push({name: exName, sets: [{reps: h?.sets[0]?.reps || 10, kg: h?.sets[0]?.kg || 0}, {reps: h?.sets[1]?.reps || 10, kg: h?.sets[1]?.kg || 0}]}); });
+      state.currentSession = ns; state.currentExoIdx = null; state.tab = 'seance'; renderAll();
     }
-    else if(act === 'delete-tpl'){ state.templates = state.templates.filter(x => x.id !== t.dataset.id); saveTemplates(); renderEntrainements(); showToast('Modèle supprimé'); }
-    else if(act === 'save-as-template'){
-      var name = prompt("Nom du modèle :", state.currentSession.title);
-      if(!name) return;
-      state.templates.push({ id: 'tpl_'+uid8(), title: name, desc: 'Personnalisé', exercises: state.currentSession.exercises.map(e=>e.name) });
-      saveTemplates(); showToast('Modèle sauvegardé');
-    }
-    else if(act === 'copy-session'){
-      var s = state.sessions.find(x => x.id === t.dataset.id);
-      var ns = { id: uid8(), date: todayStr(), title: s.title, exercises: JSON.parse(JSON.stringify(s.exercises)), durationMins: 0 };
-      state.currentSession = ns; state.currentExoIdx = null; state.sessionStartTime = Date.now(); state.tab = 'seance'; renderAll();
-    }
-    else if(act === 'open-session'){
-      var s = state.sessions.find(x => x.id === t.dataset.id);
-      state.currentSession = JSON.parse(JSON.stringify(s)); state.currentExoIdx = null; state.sessionStartTime = Date.now() - ((s.durationMins||0)*60000); state.tab = 'seance'; renderAll();
-    }
+    else if(act === 'open-session'){ var s = state.sessions.find(x => x.id === t.dataset.id); state.currentSession = JSON.parse(JSON.stringify(s)); state.currentExoIdx = null; state.tab = 'seance'; renderAll(); }
     else if(act === 'view-session-summary'){ state.selectedSessionId = t.dataset.id; state.tab = 'session-summary'; renderAll(); }
     else if(act === 'open-exo-detail-session'){ state.currentExoIdx = parseInt(t.dataset.index); state.tab = 'exo-detail'; renderAll(); }
     else if(act === 'back-to-session'){ state.currentExoIdx = null; $('#timer-bar').hidden = true; state.tab = 'seance'; renderAll(); }
     else if(act === 'open-ex-detail'){ state.selectedExerciseDetail = t.dataset.name; state.currentExoIdx = null; state.tab = 'exo-detail'; renderAll(); }
-    
-    else if(act === 'open-journal-modal'){ $('#modal-add-journal').hidden = false; $('#journal-reps').value=''; $('#journal-kg').value=''; $('#journal-notes').value=''; }
-    else if(act === 'save-journal'){
-      var r = parseInt($('#journal-reps').value); var k = parseFloat($('#journal-kg').value); var n = $('#journal-notes').value;
-      if(!r) return;
-      var exName = state.selectedExerciseDetail;
-      var ns = { id: uid8(), date: todayStr(), title: 'Journal rapide', exercises: [{ name: exName, sets: [{reps: r, kg: k||0, n: n}] }], durationMins: 0 };
-      state.sessions.push(ns); saveSessions(); $('#modal-add-journal').hidden = true; showToast('Journal ajouté');
-      renderAll();
-    }
-    else if(act === 'add-ex-to-session'){
-      var exName = state.selectedExerciseDetail;
-      if (state.currentSession) {
-        state.currentSession.exercises.push({ name: exName, sets: [{reps:10, kg:0}, {reps:10, kg:0}] });
-        state.tab = 'seance'; renderAll(); showToast('Ajouté à la séance en cours');
-      } else {
-        state.currentSession = { id: uid8(), date: todayStr(), title: 'Séance '+todayStr(), exercises: [{ name: exName, sets: [{reps:10, kg:0}, {reps:10, kg:0}] }], durationMins: 0 };
-        state.sessionStartTime = Date.now(); state.tab = 'seance'; renderAll(); showToast('Nouvelle séance créée');
-      }
-    }
-    else if(act === 'delete-set-session'){
-      var setIdx = parseInt(t.dataset.setIndex);
-      var ex = state.currentSession.exercises[state.currentExoIdx];
-      var removed = ex.sets.splice(setIdx, 1)[0];
-      renderExoDetailSession();
-      showToast('Série supprimée', 'Annuler', function(){
-        ex.sets.splice(setIdx, 0, removed);
-        renderExoDetailSession();
-      });
-    }
+    else if(act === 'add-ex-to-session'){ alert("Fonctionnalité à venir : Ajouter cet exercice à une séance existante."); }
+    else if(act === 'add-ex-journal'){ alert("Fonctionnalité à venir : Saisir un journal direct."); }
     else if(act === 'finish-session'){
-      if (state.sessionStartTime) state.currentSession.durationMins = Math.round((Date.now() - state.sessionStartTime) / 60000);
       var existingIdx = state.sessions.findIndex(s => s.id === state.currentSession.id);
-      if(existingIdx >= 0) state.sessions[existingIdx] = JSON.parse(JSON.stringify(state.currentSession));
-      else state.sessions.push(JSON.parse(JSON.stringify(state.currentSession)));
+      if(existingIdx >= 0) state.sessions[existingIdx] = JSON.parse(JSON.stringify(state.currentSession)); else state.sessions.push(JSON.parse(JSON.stringify(state.currentSession)));
       saveSessions(); state.currentSession = null; state.currentExoIdx = null; state.tab = 'entrainements'; renderAll();
-      showToast('Séance terminée');
     }
     else if(act === 'cal-prev'){ calMonth--; if(calMonth < 0){ calMonth = 11; calYear--; } renderHistorique(); }
     else if(act === 'cal-next'){ calMonth++; if(calMonth > 11){ calMonth = 0; calYear++; } renderHistorique(); }
@@ -813,35 +408,28 @@ var EXERCISES_DB = [
     else if(act === 'timer-toggle'){ toggleTimer(); }
     else if(act === 'timer-reset'){ clearInterval(timerInt); timerRunning = false; timerSec = 0; updateTimerDisplay(); $('#timer-btn').textContent = 'Start'; $('#timer-btn').classList.remove('timer-active'); }
     else if(act === 'send-chat'){
-      var inp = $('#chat-in'); if(!inp || !inp.value.trim()) return;
-      var q = inp.value.trim(); inp.value = ''; state.chat.push({ role: 'user', text: q }); renderCoach();
-      getSample().then(sample => { return sample("Contexte muscu. Question: " + q, { onText: function(res) { var msgs = document.querySelectorAll('.msg.bot'); var lastBot = msgs[msgs.length - 1]; if(!lastBot || lastBot.textContent === 'En cours...') { var div = document.createElement('div'); div.className = 'msg bot'; div.textContent = res.text; $('#chatlist').appendChild(div); } else { lastBot.textContent = res.text; } }}); }).then(res => { state.chat.push({ role: 'bot', text: res.text }); }).catch(err => { showToast(err.message); });
+      var inp = $('#chat-in'); if(!inp || !inp.value.trim()) return; var q = inp.value.trim(); inp.value = ''; state.chat.push({ role: 'user', text: q }); renderCoach();
+      getSample().then(sample => { return sample("Contexte muscu. Question: " + q, { onText: function(res) { var msgs = document.querySelectorAll('.msg.bot'); var lastBot = msgs[msgs.length - 1]; if(!lastBot || lastBot.textContent === 'En cours...') { var div = document.createElement('div'); div.className = 'msg bot'; div.textContent = res.text; $('#chatlist').appendChild(div); } else { lastBot.textContent = res.text; } }}); }).then(res => { state.chat.push({ role: 'bot', text: res.text }); }).catch(err => { alert("Erreur coach : " + err.message); });
     }
   });
 
-  // --- SWIPE BACK ---
   var touchStartX = 0; var touchStartY = 0;
   document.addEventListener('touchstart', function(ev) { touchStartX = ev.changedTouches[0].screenX; touchStartY = ev.changedTouches[0].screenY; }, {passive: true});
   document.addEventListener('touchend', function(ev) {
-    var diffX = ev.changedTouches[0].screenX - touchStartX;
-    var diffY = ev.changedTouches[0].screenY - touchStartY;
+    var diffX = ev.changedTouches[0].screenX - touchStartX; var diffY = ev.changedTouches[0].screenY - touchStartY;
     if (diffX > 50 && Math.abs(diffY) < 50) {
       if (state.tab === 'exo-detail') { if (state.currentExoIdx !== null) { state.currentExoIdx = null; state.tab = 'seance'; } else { state.tab = 'exercices'; } renderAll(); }
       else if (state.tab === 'session-summary') { state.tab = 'historique'; renderAll(); }
       else if (state.tab === 'seance') { state.tab = 'entrainements'; renderAll(); }
-      else if (state.tab === 'stats') { state.tab = 'reglages'; renderAll(); }
     }
   }, {passive: true});
 
   document.addEventListener('input', function(ev){
     var t = ev.target;
     if (t.dataset && t.dataset.field && state.currentExoIdx !== null) {
-      var ex = state.currentSession.exercises[state.currentExoIdx];
-      var setIdx = parseInt(t.dataset.setIndex);
-      var s = ex.sets[setIdx];
+      var ex = state.currentSession.exercises[state.currentExoIdx]; var setIdx = parseInt(t.dataset.setIndex); var s = ex.sets[setIdx];
       if (t.dataset.field === 'reps') s.reps = parseInt(t.value) || null;
       if (t.dataset.field === 'kg') s.kg = parseFloat(t.value.replace(',','.')) || null;
-      if (t.dataset.field === 'n') s.n = t.value;
     }
   });
 
