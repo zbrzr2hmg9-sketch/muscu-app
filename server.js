@@ -1,4 +1,4 @@
-import 'dotenv/config';
+DEEPSEEK_API_KEYimport 'dotenv/config';
 import express from 'express';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
