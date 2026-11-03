@@ -31,7 +31,7 @@ h1{font-family:var(--display); font-weight:800; font-size:32px; margin:0 0 4px 0
 h2{font-family:var(--display); font-weight:700; font-size:22px; margin:0 0 12px 0}
 h3{font-family:var(--display); font-weight:600; font-size:17px; margin:0}
 
-/* ANIMATIONS GLOBALES */
+/* ANIMATIONS */
 @keyframes slideInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 @keyframes slideInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
@@ -72,7 +72,7 @@ nav button svg{width:24px; height:24px; fill:currentColor; transition: transform
 nav button.active{color:var(--accent)}
 nav button.active svg{transform: translateY(-2px);}
 
-/* Écran Séance (Pull A) */
+/* Écran Séance */
 .session-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px}
 .ex-row{display:flex; align-items:center; padding:16px; border-bottom:1px solid var(--rule); gap:12px; cursor:pointer}
 .ex-row:last-child{border-bottom:0}
@@ -82,19 +82,22 @@ nav button.active svg{transform: translateY(-2px);}
 .ex-title{font-weight:600; font-size:16px; color:var(--fg)}
 .ex-sub{font-size:13px; color:var(--muted)}
 
-/* Écran Exercice (Curl Pupitre) */
+/* Écran Exercice */
 .exo-detail-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px}
 .exo-detail-title{font-size:32px; font-weight:800; line-height:1.1; letter-spacing:-0.5px; margin-bottom:20px}
 .set-history-row{display:flex; align-items:center; padding:12px 0; border-bottom:1px solid var(--rule); gap:16px}
+.set-history-row:last-child{border-bottom:0}
 .set-circle{width:32px; height:32px; border-radius:50%; background:#E8E8ED; color:#555; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0}
-.set-main{font-size:18px; font-weight:600}
-.set-main span{color:var(--muted); font-size:14px; font-weight:500}
+.set-inputs{display:flex; gap:8px; width:140px}
+.set-inputs input{width:60px; text-align:center; padding:8px; font-weight:700; height:40px}
 .set-history-text{flex:1; text-align:right; color:var(--muted); font-size:13px; line-height:1.6}
 .set-history-text u{text-decoration:underline; text-decoration-color:#C7C7CC}
 .chart-container{background:var(--surface); border-radius:16px; padding:16px; margin-top:16px}
 .chart-svg{width:100%; height:auto; overflow:visible}
 .chart-line { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawLine 1.5s ease-out forwards; }
 .chart-point { opacity: 0; animation: fadeInUp 0.3s ease 0.8s forwards; }
+
+/* Timer */
 .timer-bar{position:fixed; bottom:64px; left:0; right:0; background:var(--surface); border-top:1px solid var(--rule); padding:12px 16px; display:flex; align-items:center; gap:16px; z-index:10; animation: slideInUp 0.3s ease forwards; box-shadow: 0 -4px 12px rgba(0,0,0,0.05);}
 @keyframes slideInUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 .timer-display{font-family:monospace; font-size:24px; font-weight:700; color:var(--muted); flex:1; text-align:center}
@@ -152,7 +155,7 @@ nav button.active svg{transform: translateY(-2px);}
 (function(){
   var $=function(s,r){return (r||document).querySelector(s)};
   var LS_KEY='carnet-muscu.v1';
-  var state={tab:'entrainements',sessions:[],cur:null,templates:[],metrics:[],loaded:false,currentExo:null,currentSession:null,chat:[]};
+  var state={tab:'entrainements',sessions:[],cur:null,templates:[],loaded:false,currentExoIdx:null,currentSession:null,chat:[]};
   var currentDate = new Date();
   var calMonth = currentDate.getMonth();
   var calYear = currentDate.getFullYear();
@@ -161,11 +164,7 @@ nav button.active svg{transform: translateY(-2px);}
   var timerSec = 0;
   var timerRunning = false;
 
-  // Fonction utilitaire de vibration (haptique)
-  function haptic() {
-    if (navigator.vibrate) navigator.vibrate(10);
-  }
-
+  function haptic() { if (navigator.vibrate) navigator.vibrate(10); }
   function uid8(){return Math.random().toString(36).slice(2,10)}
   function pad(n){return String(n).padStart(2,'0')}
   function todayStr(){var d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
@@ -218,7 +217,7 @@ nav button.active svg{transform: translateY(-2px);}
     };
   }
 
-  /* --- RENDU : ENTRAINEMENTS (Liste) --- */
+  /* --- RENDU : ENTRAINEMENTS --- */
   function renderEntrainements(){
     var el = $('#v-entrainements');
     var today = new Date();
@@ -229,7 +228,6 @@ nav button.active svg{transform: translateY(-2px);}
         var diff = Math.floor((today - parseDate(lastDone.date)) / (1000 * 60 * 60 * 24));
         daysAgo = diff === 0 ? "Auj." : diff + " j";
       }
-      // Animation en cascade : chaque ligne apparaît avec un délai
       return `
         <div class="row cascade-item" style="animation-delay: ${i * 0.05}s" data-act="start-tpl" data-id="${t.id}">
           <div class="r-left"><div class="r-title">${esc(t.title)}</div><div class="r-sub">${esc(t.desc)}</div></div>
@@ -237,7 +235,6 @@ nav button.active svg{transform: translateY(-2px);}
         </div>
       `;
     }).join('');
-
     el.innerHTML = `<div class="head"><h1>Entraînements</h1><div class="line"></div></div><div class="card">${tplsHtml}</div>`;
   }
 
@@ -294,7 +291,7 @@ nav button.active svg{transform: translateY(-2px);}
     `;
   }
 
-  /* --- RENDU : SEANCE (Pull A) --- */
+  /* --- RENDU : SEANCE --- */
   function renderSeance(){
     var el = $('#v-seance');
     if(!state.currentSession) return;
@@ -325,6 +322,7 @@ nav button.active svg{transform: translateY(-2px);}
           <button class="icon-btn">⌨️</button>
           <button class="icon-btn">👤</button>
           <button class="icon-btn">⏱️</button>
+          <button class="btn primary" style="padding:0 12px; min-height:36px; margin-left:8px" data-act="finish-session">Terminer</button>
         </div>
       </div>
       <h1 class="head" style="font-size:36px; margin-bottom:20px;">${esc(state.currentSession.title)}<br><span style="display:inline-block; width:40px; height:4px; background:var(--accent); border-radius:2px; margin-top:10px;"></span></h1>
@@ -335,12 +333,12 @@ nav button.active svg{transform: translateY(-2px);}
     `;
   }
 
-  /* --- RENDU : EXO DETAIL (Curl Pupitre) --- */
+  /* --- RENDU : EXO DETAIL --- */
   function renderExoDetail(){
     var el = $('#v-exo-detail');
-    if(!state.currentExo) return;
+    if(state.currentExoIdx === null || !state.currentSession) return;
     
-    var ex = state.currentExo;
+    var ex = state.currentSession.exercises[state.currentExoIdx];
     var pastSessions = state.sessions.filter(s => s.exercises.some(e => e.name === ex.name)).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,3);
 
     var setsHtml = ex.sets.map(function(s, j){
@@ -352,4 +350,231 @@ nav button.active svg{transform: translateY(-2px);}
       }).join('');
 
       return `
-        <div class="set-history-row
+        <div class="set-history-row">
+          <div class="set-circle">${j+1}</div>
+          <div class="set-inputs">
+            <input type="text" inputmode="numeric" value="${s.reps||''}" data-set-index="${j}" data-field="reps" placeholder="Reps">
+            <input type="text" inputmode="decimal" value="${s.kg||''}" data-set-index="${j}" data-field="kg" placeholder="Kg">
+          </div>
+          <div class="set-history-text">${historyLines || '<span style="font-size:12px">Aucun historique</span>'}</div>
+        </div>
+      `;
+    }).join('');
+
+    // Génération du graphique dynamique
+    var chartData = pastSessions.map(ps => {
+      var pex = ps.exercises.find(e => e.name === ex.name);
+      var maxKg = Math.max(...pex.sets.map(s=>s.kg||0));
+      return { date: fmtShort(ps.date), val: maxKg };
+    }).reverse();
+    // Ajouter la séance actuelle
+    var currentMaxKg = Math.max(...ex.sets.map(s=>s.kg||0));
+    if (currentMaxKg > 0) chartData.push({date: 'Auj.', val: currentMaxKg});
+
+    var svgHtml = '';
+    if (chartData.length > 1) {
+      var maxVal = Math.max(...chartData.map(d=>d.val)) || 10;
+      var points = chartData.map((d, i) => {
+        var x = (i / (chartData.length - 1)) * 280 + 10;
+        var y = 90 - (d.val / maxVal) * 80;
+        return {x, y, val: d.val};
+      });
+      var path = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ');
+      var circles = points.map(p => `<circle class="chart-point" cx="${p.x}" cy="${p.y}" r="4" fill="var(--accent)"/>`).join('');
+      
+      svgHtml = `
+        <div class="chart-container">
+          <div style="display:flex; justify-content:space-between; color:var(--muted); font-size:12px; margin-bottom:12px">
+            <span>Historique</span>
+            <span>${maxVal.toFixed(1)} kg</span>
+          </div>
+          <svg class="chart-svg" viewBox="0 0 300 100">
+            <path class="chart-line" d="${path}" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
+            ${circles}
+          </svg>
+        </div>
+      `;
+    } else {
+      svgHtml = `<div class="chart-container" style="text-align:center; color:var(--muted); font-size:14px">Pas assez de données pour le graphique.</div>`;
+    }
+
+    el.innerHTML = `
+      <div class="exo-detail-header">
+        <button class="icon-btn" data-act="back-to-session"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <div style="display:flex; gap:8px">
+          <button class="icon-btn">⌨️</button>
+          <button class="icon-btn">👤</button>
+          <button class="icon-btn" data-act="timer-show">⏱️</button>
+        </div>
+      </div>
+      
+      <div class="exo-detail-title">${esc(ex.name)}</div>
+      
+      <div class="card" style="padding:16px;">
+        ${setsHtml}
+      </div>
+      
+      ${svgHtml}
+    `;
+    $('#timer-bar').hidden = false;
+  }
+
+  /* --- RENDU : COACH --- */
+  function renderCoach(){
+    var el = $('#v-coach');
+    var msgs = state.chat.map(m => `<div class="msg ${m.role}">${esc(m.text)}</div>`).join('');
+    el.innerHTML = `
+      <div class="head" style="display:flex; justify-content:space-between; align-items:center">
+        <button class="btn ghost" data-act="tab" data-tab="reglages" style="padding:0">‹ Retour</button>
+        <h1 style="margin:0; font-size:20px">Coach IA</h1><div style="width:60px"></div>
+      </div>
+      <div class="chat-container" id="chatlist">${msgs || '<div class="msg bot">Bonjour ! Posez-moi une question.</div>'}</div>
+      <div style="display:flex; gap:8px; margin-top:12px">
+        <input type="text" id="chat-in" placeholder="Votre question..." style="flex:1">
+        <button class="btn primary" data-act="send-chat">Envoyer</button>
+      </div>
+    `;
+    var list = $('#chatlist'); if(list) list.scrollTop = list.scrollHeight;
+  }
+
+  function renderAll(){
+    ['entrainements','exercices','historique','mensurations','reglages','seance','exo-detail','coach'].forEach(function(t){$('#v-'+t).hidden=state.tab!==t});
+    document.querySelectorAll('nav button').forEach(function(b){
+      if(b.dataset.tab===state.tab) b.classList.add('active'); else b.classList.remove('active');
+    });
+
+    if(state.tab === 'entrainements') renderEntrainements();
+    else if(state.tab === 'exercices') renderExercices();
+    else if(state.tab === 'historique') renderHistorique();
+    else if(state.tab === 'mensurations') renderMensurations();
+    else if(state.tab === 'reglages') renderReglages();
+    else if(state.tab === 'seance') renderSeance();
+    else if(state.tab === 'exo-detail') renderExoDetail();
+    else if(state.tab === 'coach') renderCoach();
+  }
+
+  /* --- TIMER --- */
+  function updateTimerDisplay() {
+    var h = Math.floor(timerSec / 3600);
+    var m = Math.floor((timerSec % 3600) / 60);
+    var s = timerSec % 60;
+    $('#timer-display').textContent = pad(h) + ':' + pad(m) + ':' + pad(s);
+  }
+  function toggleTimer() {
+    haptic();
+    if(timerRunning) {
+      clearInterval(timerInt);
+      $('#timer-btn').textContent = 'Start';
+      $('#timer-btn').classList.remove('timer-active');
+    } else {
+      timerInt = setInterval(() => { timerSec++; updateTimerDisplay(); }, 1000);
+      $('#timer-btn').textContent = 'Stop';
+      $('#timer-btn').classList.add('timer-active');
+    }
+    timerRunning = !timerRunning;
+  }
+
+  /* --- ACTIONS --- */
+  document.addEventListener('click', function(ev){
+    var t = ev.target.closest('[data-act]');
+    if(!t) return;
+    haptic();
+    var act = t.dataset.act;
+
+    if(act === 'tab'){
+      state.tab = t.dataset.tab;
+      if (state.tab !== 'exo-detail') $('#timer-bar').hidden = true; // Cacher le timer si on quitte
+      renderAll();
+      window.scrollTo(0,0);
+    }
+    else if(act === 'start-tpl'){
+      var tpl = state.templates.find(x => x.id === t.dataset.id);
+      if(!tpl) return;
+      
+      var ns = { id: uid8(), date: todayStr(), title: tpl.title, exercises: [] };
+      tpl.exercises.forEach(function(exName){
+        var h = state.sessions.flatMap(s => s.exercises).filter(e => e.name === exName)[0];
+        var sets = [{reps: h?.sets[0]?.reps || 10, kg: h?.sets[0]?.kg || 0}, {reps: h?.sets[1]?.reps || 10, kg: h?.sets[1]?.kg || 0}];
+        ns.exercises.push({name: exName, sets: sets});
+      });
+      state.currentSession = ns;
+      state.tab = 'seance';
+      renderAll();
+    }
+    else if(act === 'open-exo'){
+      state.currentExoIdx = parseInt(t.dataset.index);
+      state.tab = 'exo-detail';
+      renderAll();
+    }
+    else if(act === 'back-to-session'){
+      state.currentExoIdx = null;
+      $('#timer-bar').hidden = true; 
+      state.tab = 'seance';
+      renderAll();
+    }
+    else if(act === 'finish-session'){
+      if(!state.currentSession) return;
+      state.sessions.push(JSON.parse(JSON.stringify(state.currentSession)));
+      saveSessions();
+      state.currentSession = null;
+      state.currentExoIdx = null;
+      state.tab = 'entrainements';
+      renderAll();
+    }
+    else if(act === 'cal-prev'){ calMonth--; if(calMonth < 0){ calMonth = 11; calYear--; } renderHistorique(); }
+    else if(act === 'cal-next'){ calMonth++; if(calMonth > 11){ calMonth = 0; calYear++; } renderHistorique(); }
+    else if(act === 'timer-show'){ $('#timer-bar').hidden = false; }
+    else if(act === 'timer-toggle'){ toggleTimer(); }
+    else if(act === 'timer-reset'){ 
+      clearInterval(timerInt); timerRunning = false; timerSec = 0; 
+      updateTimerDisplay(); 
+      $('#timer-btn').textContent = 'Start'; 
+      $('#timer-btn').classList.remove('timer-active');
+    }
+    else if(act === 'send-chat'){
+      var inp = $('#chat-in');
+      if(!inp || !inp.value.trim()) return;
+      var q = inp.value.trim();
+      inp.value = '';
+      state.chat.push({ role: 'user', text: q });
+      renderCoach();
+      
+      getSample().then(sample => {
+        return sample("Contexte muscu. Question: " + q, {
+          onText: function(res) {
+            var msgs = document.querySelectorAll('.msg.bot');
+            var lastBot = msgs[msgs.length - 1];
+            if(!lastBot || lastBot.textContent === 'En cours...') {
+               var div = document.createElement('div');
+               div.className = 'msg bot';
+               div.textContent = res.text;
+               $('#chatlist').appendChild(div);
+            } else {
+               lastBot.textContent = res.text;
+            }
+          }
+        });
+      }).then(res => {
+        state.chat.push({ role: 'bot', text: res.text });
+      }).catch(err => {
+        alert("Erreur coach : " + err.message);
+      });
+    }
+  });
+
+  /* --- SAUVEGARDE EN TEMPS RÉEL DES INPUTS --- */
+  document.addEventListener('input', function(ev){
+    var t = ev.target;
+    if (t.dataset && t.dataset.field && state.currentExoIdx !== null) {
+      var ex = state.currentSession.exercises[state.currentExoIdx];
+      var setIdx = parseInt(t.dataset.setIndex);
+      var s = ex.sets[setIdx];
+      if (t.dataset.field === 'reps') s.reps = parseInt(t.value) || null;
+      if (t.dataset.field === 'kg') s.kg = parseFloat(t.value.replace(',','.')) || null;
+    }
+  });
+
+  initStore();
+})();
+</script>
+</body></html>
