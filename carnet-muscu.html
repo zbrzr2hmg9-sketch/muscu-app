@@ -10,7 +10,7 @@
 :root{
   --bg:#F2F2F7; --surface:#FFFFFF; --fg:#1C1C1E; --muted:#8E8E93; --rule:#E5E5EA;
   --accent:#20B2AA; --accent-fg:#FFFFFF; --accent-light:#E0F7F6;
-  --danger:#FF3B30; --blue:#007AFF;
+  --danger:#FF3B30; --blue:#007AFF; --success:#34C759;
   --display:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
   --body:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
 }
@@ -47,7 +47,7 @@ section:not([hidden]) { animation: fadeInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) f
 
 .head{margin-bottom:20px; padding-top:8px}
 .head .line{display:inline-block; width:40px; height:4px; background:var(--accent); border-radius:2px; margin-top:6px}
-.card{background:var(--surface); border-radius:16px; overflow:hidden; margin-bottom:16px}
+.card{background:var(--surface); border-radius:16px; overflow:hidden; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.03)}
 .row{display:flex; align-items:center; justify-content:space-between; padding:16px; border-bottom:1px solid var(--rule); gap:12px}
 .row:last-child{border-bottom:0}
 .row .r-left{display:flex; flex-direction:column; gap:2px; flex:1; min-width:0}
@@ -59,14 +59,17 @@ section:not([hidden]) { animation: fadeInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) f
 .info-btn{background:transparent; border:2px solid var(--accent); color:var(--accent); width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; cursor:pointer; transition: transform 0.15s ease;}
 .info-btn:active{ transform: scale(0.85); }
 .chevron{color:#C7C7CC; font-size:20px; font-weight:400}
-.icon-btn{background:transparent; border:0; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; color:var(--muted); transition: transform 0.15s ease;}
+.icon-btn{background:transparent; border:0; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--muted); transition: transform 0.15s ease; background-color: var(--surface);}
 .btn{min-height:44px; padding:0 16px; border-radius:10px; border:1px solid var(--rule); background:var(--surface); font-weight:600; font-size:15px}
 .btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
 .btn.ghost{background:transparent; border-color:transparent; color:var(--accent)}
 input[type="text"], input[type="number"], input[type="date"], textarea{width:100%; border:1px solid var(--rule); border-radius:10px; background:var(--bg); padding:12px; font-size:16px; color:var(--fg); outline:none; transition: border-color 0.2s ease, box-shadow 0.2s ease;}
 input:focus, textarea:focus{border-color:var(--accent); box-shadow: 0 0 0 3px var(--accent-light);}
 .lbl{display:block; font-size:13px; font-weight:600; color:var(--muted); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px}
-nav{position:fixed; left:0; right:0; bottom:0; background:var(--surface); border-top:1px solid var(--rule); z-index:20; padding-bottom:env(safe-area-inset-bottom, 0px); display:flex; justify-content:space-around; height:64px; padding-top:8px}
+
+/* BARRE DE NAVIGATION FLOUTÉE */
+nav{position:fixed; left:0; right:0; bottom:0; background:rgba(255,255,255,0.85); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-top:1px solid var(--rule); z-index:20; padding-bottom:env(safe-area-inset-bottom, 0px); display:flex; justify-content:space-around; height:64px; padding-top:8px}
+@media (prefers-color-scheme: dark){nav{background:rgba(0,0,0,0.85)}}
 nav button{background:none; border:0; display:flex; flex-direction:column; align-items:center; gap:4px; color:var(--muted); font-size:10px; font-weight:600; padding:0 8px; flex:1; transition: color 0.2s ease, transform 0.15s ease;}
 nav button svg{width:24px; height:24px; fill:currentColor; transition: transform 0.2s ease;}
 nav button.active{color:var(--accent)}
@@ -85,23 +88,33 @@ nav button.active svg{transform: translateY(-2px);}
 /* Écran Exercice */
 .exo-detail-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px}
 .exo-detail-title{font-size:32px; font-weight:800; line-height:1.1; letter-spacing:-0.5px; margin-bottom:20px}
-.set-history-row{display:flex; align-items:center; padding:12px 0; border-bottom:1px solid var(--rule); gap:16px}
+.set-history-row{display:flex; align-items:center; padding:12px 0; border-bottom:1px solid var(--rule); gap:12px}
 .set-history-row:last-child{border-bottom:0}
-.set-circle{width:32px; height:32px; border-radius:50%; background:#E8E8ED; color:#555; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0}
+.set-check{width:36px; height:36px; border-radius:50%; background:var(--bg); border:2px solid var(--rule); color:transparent; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; cursor:pointer; transition:all 0.2s ease}
+.set-check.done{background:var(--accent); border-color:var(--accent); color:#fff}
 .set-inputs{display:flex; gap:8px; width:140px}
 .set-inputs input{width:60px; text-align:center; padding:8px; font-weight:700; height:40px}
 .set-history-text{flex:1; text-align:right; color:var(--muted); font-size:13px; line-height:1.6}
 .set-history-text u{text-decoration:underline; text-decoration-color:#C7C7CC}
-.chart-container{background:var(--surface); border-radius:16px; padding:16px; margin-top:16px}
+.chart-container{background:var(--surface); border-radius:16px; padding:16px; margin-top:16px; box-shadow:0 2px 8px rgba(0,0,0,0.03)}
 .chart-svg{width:100%; height:auto; overflow:visible}
 .chart-line { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawLine 1.5s ease-out forwards; }
 .chart-point { opacity: 0; animation: fadeInUp 0.3s ease 0.8s forwards; }
 
 /* Timer */
-.timer-bar{position:fixed; bottom:64px; left:0; right:0; background:var(--surface); border-top:1px solid var(--rule); padding:12px 16px; display:flex; align-items:center; gap:16px; z-index:10; animation: slideInUp 0.3s ease forwards; box-shadow: 0 -4px 12px rgba(0,0,0,0.05);}
+.timer-bar{position:fixed; bottom:64px; left:0; right:0; background:rgba(255,255,255,0.9); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-top:1px solid var(--rule); padding:12px 16px; display:flex; align-items:center; gap:16px; z-index:10; animation: slideInUp 0.3s ease forwards; box-shadow: 0 -4px 12px rgba(0,0,0,0.05);}
+@media (prefers-color-scheme: dark){.timer-bar{background:rgba(0,0,0,0.9)}}
 @keyframes slideInUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 .timer-display{font-family:monospace; font-size:24px; font-weight:700; color:var(--muted); flex:1; text-align:center}
 .timer-active { animation: pulseGlow 2s infinite; background-color: var(--accent-light) !important; color: var(--accent) !important; }
+
+/* Modale */
+.modal-overlay{position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:100; display:flex; align-items:flex-end; animation:fadeInUp 0.3s ease}
+.modal-content{background:var(--surface); width:100%; max-height:80vh; border-top-left-radius:20px; border-top-right-radius:20px; padding:20px; padding-bottom:env(safe-area-inset-bottom, 20px); overflow-y:auto; animation:slideInUp 0.3s ease}
+.modal-content input{width:100%; margin-bottom:12px}
+.modal-ex-list{list-style:none; padding:0; margin:0}
+.modal-ex-list li{padding:12px; border-bottom:1px solid var(--rule); cursor:pointer; font-weight:600}
+.modal-ex-list li:active{background:var(--bg)}
 
 /* Coach Chat */
 .chat-container{display:flex; flex-direction:column; gap:12px; margin-bottom:16px}
@@ -109,8 +122,8 @@ nav button.active svg{transform: translateY(-2px);}
 .msg.user{align-self:flex-end; background:var(--accent); color:#fff; border-bottom-right-radius:4px; animation-name: slideInRight;}
 .msg.bot{align-self:flex-start; background:var(--surface); border:1px solid var(--rule); border-bottom-left-radius:4px; animation-name: slideInLeft;}
 
-/* Correctif Historique */
-.cal { background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+/* Calendrier */
+.cal { background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 16px; box-shadow:0 2px 8px rgba(0,0,0,0.03) }
 .cal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 .cal-head button { background: var(--bg); border: 1px solid var(--rule); border-radius: 8px; width: 36px; height: 36px; color: var(--fg); font-size: 18px; display: flex; align-items: center; justify-content: center; }
 .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; gap: 8px 0; }
@@ -161,8 +174,17 @@ nav button.active svg{transform: translateY(-2px);}
   <button class="icon-btn" data-act="timer-reset" style="font-size:16px">↺</button>
 </div>
 
+<div class="modal-overlay" id="modal-add-exo" hidden>
+  <div class="modal-content">
+    <h2>Ajouter un exercice</h2>
+    <input type="text" id="search-exo" placeholder="Rechercher..." autocomplete="off">
+    <ul class="modal-ex-list" id="modal-ex-list"></ul>
+    <button class="btn ghost" style="width:100%; margin-top:12px" data-act="close-modal">Fermer</button>
+  </div>
+</div>
+
 <script>
-// BASE DE DONNÉES D'EXERCICES EXTRAITE DE TON CSV GYMBOK
+// BASE DE DONNÉES D'EXERCICES (extrait)
 var EXERCISES_DB = [
   {n:"Élévation Latérale Machine Unilatéral", r:"Épaules", g:"Épaules"},
   {n:"Archer Pull", r:"Épaules", g:"Épaules"},
@@ -248,7 +270,7 @@ var EXERCISES_DB = [
   {n:"Curl à la Barre", r:"Bras", g:"Fléchisseurs des bras"},
   {n:"Curl à la Poulie Basse, Prise Marteau", r:"Bras", g:"Fléchisseurs des bras"},
   {n:"Curl à la Barre, Prise Inversée", r:"Bras", g:"Extenseurs des poignets, Fléchisseurs des bras"},
-  {n:"Planche", r:"Abdominaux", g:"Muscles lombaires, Abdominaux, Obliques"},
+  {n:"Planche", r:"Abdominaux", g:"Muscles lombaires, Abdomiaux, Obliques"},
   {n:"Relevé de Jambes à la Machine", r:"Abdominaux", g:"Abdominaux"},
   {n:"Relevé du Buste Incliné", r:"Abdominaux", g:"Abdominaux"},
   {n:"Fente avec Haltères", r:"Fessiers", g:"Fessiers, Quadriceps"},
@@ -347,7 +369,6 @@ var EXERCISES_DB = [
 
   /* --- RENDU : EXERCICES --- */
   function renderExercices(){
-    // Regrouper par catégorie principale
     var groups = {};
     EXERCISES_DB.forEach(function(ex) {
       if (!groups[ex.r]) groups[ex.r] = [];
@@ -375,7 +396,7 @@ var EXERCISES_DB = [
     for (var d = 1; d <= daysInMonth; d++) {
       var dateStr = calYear + '-' + pad(calMonth+1) + '-' + pad(d);
       var sessionOnDay = state.sessions.find(s => s.date === dateStr);
-      daysHtml += `<div class="cal-day ${sessionOnDay ? 'has-workout' : ''}">${d}</div>`;
+      daysHtml += `<div class="cal-day ${sessionOnDay ? 'has-workout' : ''}" data-act="view-day" data-id="${sessionOnDay ? sessionOnDay.id : ''}">${d}</div>`;
     }
 
     el.innerHTML = `
@@ -438,10 +459,8 @@ var EXERCISES_DB = [
       <div class="session-header">
         <button class="icon-btn" data-act="tab" data-tab="entrainements"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
         <div style="display:flex; gap:8px">
-          <button class="icon-btn">⌨️</button>
-          <button class="icon-btn">👤</button>
-          <button class="icon-btn">⏱️</button>
-          <button class="btn primary" style="padding:0 12px; min-height:36px; margin-left:8px" data-act="finish-session">Terminer</button>
+          <button class="icon-btn" data-act="open-modal" aria-label="Ajouter un exercice">+</button>
+          <button class="btn primary" style="padding:0 16px; min-height:36px" data-act="finish-session">Terminer</button>
         </div>
       </div>
       <h1 class="head" style="font-size:36px; margin-bottom:20px;">${esc(state.currentSession.title)}<br><span style="display:inline-block; width:40px; height:4px; background:var(--accent); border-radius:2px; margin-top:10px;"></span></h1>
@@ -470,23 +489,21 @@ var EXERCISES_DB = [
 
       return `
         <div class="set-history-row">
-          <div class="set-circle">${j+1}</div>
+          <div class="set-check ${s.done ? 'done' : ''}" data-act="toggle-set" data-set-index="${j}">✓</div>
           <div class="set-inputs">
             <input type="text" inputmode="numeric" value="${s.reps||''}" data-set-index="${j}" data-field="reps" placeholder="Reps">
             <input type="text" inputmode="decimal" value="${s.kg||''}" data-set-index="${j}" data-field="kg" placeholder="Kg">
           </div>
-          <div class="set-history-text">${historyLines || '<span style="font-size:12px">Aucun historique</span>'}</div>
+          <div class="set-history-text">${historyLines || '<span style="font-size:12px">Nouveau</span>'}</div>
         </div>
       `;
     }).join('');
 
-    // Génération du graphique dynamique
     var chartData = pastSessions.map(ps => {
       var pex = ps.exercises.find(e => e.name === ex.name);
       var maxKg = Math.max(...pex.sets.map(s=>s.kg||0));
       return { date: fmtShort(ps.date), val: maxKg };
     }).reverse();
-    // Ajouter la séance actuelle
     var currentMaxKg = Math.max(...ex.sets.map(s=>s.kg||0));
     if (currentMaxKg > 0) chartData.push({date: 'Auj.', val: currentMaxKg});
 
@@ -521,8 +538,6 @@ var EXERCISES_DB = [
       <div class="exo-detail-header">
         <button class="icon-btn" data-act="back-to-session"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
         <div style="display:flex; gap:8px">
-          <button class="icon-btn">⌨️</button>
-          <button class="icon-btn">👤</button>
           <button class="icon-btn" data-act="timer-show">⏱️</button>
         </div>
       </div>
@@ -531,6 +546,7 @@ var EXERCISES_DB = [
       
       <div class="card" style="padding:16px;">
         ${setsHtml}
+        <button class="btn ghost" style="width:100%; margin-top:12px" data-act="add-set">+ Ajouter une série</button>
       </div>
       
       ${svgHtml}
@@ -554,6 +570,15 @@ var EXERCISES_DB = [
       </div>
     `;
     var list = $('#chatlist'); if(list) list.scrollTop = list.scrollHeight;
+  }
+
+  /* --- MODALE AJOUT EXERCICE --- */
+  function renderModalExercises(query){
+    var list = $('#modal-ex-list');
+    if (!list) return;
+    var q = (query||'').toLowerCase();
+    var filtered = EXERCISES_DB.filter(ex => ex.n.toLowerCase().includes(q));
+    list.innerHTML = filtered.slice(0, 50).map(ex => `<li data-act="add-exo-modal" data-name="${esc(ex.n)}">${esc(ex.n)} <span style="color:var(--muted); font-size:12px; font-weight:normal">${esc(ex.r)}</span></li>`).join('');
   }
 
   function renderAll(){
@@ -606,6 +631,21 @@ var EXERCISES_DB = [
       renderAll();
       window.scrollTo(0,0);
     }
+    else if(act === 'open-modal'){
+      $('#modal-add-exo').hidden = false;
+      $('#search-exo').value = '';
+      renderModalExercises('');
+    }
+    else if(act === 'close-modal'){
+      $('#modal-add-exo').hidden = true;
+    }
+    else if(act === 'add-exo-modal'){
+      var name = t.dataset.name;
+      if (!state.currentSession) return;
+      state.currentSession.exercises.push({name: name, sets: [{reps:10, kg:0, done:false}, {reps:10, kg:0, done:false}]});
+      $('#modal-add-exo').hidden = true;
+      renderSeance();
+    }
     else if(act === 'start-tpl'){
       var tpl = state.templates.find(x => x.id === t.dataset.id);
       if(!tpl) return;
@@ -613,7 +653,7 @@ var EXERCISES_DB = [
       var ns = { id: uid8(), date: todayStr(), title: tpl.title, exercises: [] };
       tpl.exercises.forEach(function(exName){
         var h = state.sessions.flatMap(s => s.exercises).filter(e => e.name === exName)[0];
-        var sets = [{reps: h?.sets[0]?.reps || 10, kg: h?.sets[0]?.kg || 0}, {reps: h?.sets[1]?.reps || 10, kg: h?.sets[1]?.kg || 0}];
+        var sets = [{reps: h?.sets[0]?.reps || 10, kg: h?.sets[0]?.kg || 0, done:false}, {reps: h?.sets[1]?.reps || 10, kg: h?.sets[1]?.kg || 0, done:false}];
         ns.exercises.push({name: exName, sets: sets});
       });
       state.currentSession = ns;
@@ -631,6 +671,21 @@ var EXERCISES_DB = [
       state.tab = 'seance';
       renderAll();
     }
+    else if(act === 'add-set'){
+      var ex = state.currentSession.exercises[state.currentExoIdx];
+      ex.sets.push({reps: ex.sets[ex.sets.length-1]?.reps || 10, kg: ex.sets[ex.sets.length-1]?.kg || 0, done:false});
+      renderExoDetail();
+    }
+    else if(act === 'toggle-set'){
+      var setIdx = parseInt(t.dataset.setIndex);
+      var ex = state.currentSession.exercises[state.currentExoIdx];
+      ex.sets[setIdx].done = !ex.sets[setIdx].done;
+      renderExoDetail();
+      if (ex.sets[setIdx].done) {
+        // Lance automatiquement le chrono au clic
+        if(!timerRunning) toggleTimer();
+      }
+    }
     else if(act === 'finish-session'){
       if(!state.currentSession) return;
       state.sessions.push(JSON.parse(JSON.stringify(state.currentSession)));
@@ -639,6 +694,16 @@ var EXERCISES_DB = [
       state.currentExoIdx = null;
       state.tab = 'entrainements';
       renderAll();
+    }
+    else if(act === 'view-day'){
+      var id = t.dataset.id;
+      if (!id) return;
+      var s = state.sessions.find(x => x.id === id);
+      if (s) {
+        state.currentSession = JSON.parse(JSON.stringify(s));
+        state.tab = 'seance';
+        renderAll();
+      }
     }
     else if(act === 'cal-prev'){ calMonth--; if(calMonth < 0){ calMonth = 11; calYear--; } renderHistorique(); }
     else if(act === 'cal-next'){ calMonth++; if(calMonth > 11){ calMonth = 0; calYear++; } renderHistorique(); }
@@ -681,9 +746,11 @@ var EXERCISES_DB = [
     }
   });
 
-  /* --- SAUVEGARDE EN TEMPS RÉEL DES INPUTS --- */
   document.addEventListener('input', function(ev){
     var t = ev.target;
+    if (t.id === 'search-exo') {
+      renderModalExercises(t.value);
+    }
     if (t.dataset && t.dataset.field && state.currentExoIdx !== null) {
       var ex = state.currentSession.exercises[state.currentExoIdx];
       var setIdx = parseInt(t.dataset.setIndex);
