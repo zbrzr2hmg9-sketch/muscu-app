@@ -98,7 +98,6 @@ nav button[aria-current="page"]{color:var(--fg); border-top-color:var(--accent)}
 .imp input[type=file]{width:100%; margin:4px 0 2px}
 .imp .row{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
 .imp .stats{margin:10px 0}
-#v-histo>.btn{width:100%; margin-top:4px}
 .ana{margin-top:16px; padding:14px; border:1px solid var(--rule); border-radius:10px; background:var(--surface)}
 .ana h2{font-size:22px; margin-bottom:6px}
 .anatxt{white-space:pre-wrap; margin:0 0 8px; min-height:1.4em}
@@ -113,12 +112,6 @@ nav button[aria-current="page"]{color:var(--fg); border-top-color:var(--accent)}
 .notes-l li{display:block; font-size:14px; overflow-wrap:anywhere}
 .notes-l time{color:var(--muted); margin-right:8px}
 .sect{font-family:var(--display); font-weight:700; font-size:22px; margin:18px 0 6px}
-.progbox{margin:0 0 16px}
-.chip.next{border-color:var(--accent); color:var(--accent); font-weight:600}
-.tpl-l{list-style:none; margin:8px 0; padding:0}
-.tpl-l li{display:flex; gap:12px; justify-content:space-between; align-items:flex-start; padding:10px 0; border-top:1px solid var(--rule)}
-.tpl-l li>div{min-width:0}
-.tpl-l strong{font-family:var(--display); font-size:22px; font-weight:700}
 .chat{display:flex; flex-direction:column; gap:12px; margin-bottom:14px}
 .msg{max-width:88%; padding:10px 12px; border-radius:12px; line-height:1.45; white-space:pre-wrap; overflow-wrap:anywhere; font-size:14px}
 .msg.user{align-self:flex-end; background:var(--accent); color:var(--accent-fg); border-bottom-right-radius:4px}
@@ -158,15 +151,13 @@ nav button[aria-current="page"]{color:var(--fg); border-top-color:var(--accent)}
   var $=function(s,r){return (r||document).querySelector(s)};
   var DEFAULTS=['Développé couché','Squat','Soulevé de terre','Développé militaire','Tractions','Rowing barre','Presse à cuisses','Dips','Curl biceps','Hip thrust','Fentes','Tirage vertical'];
   var LS_KEY='carnet-muscu.v1';
-  var state={tab:'seance',sessions:[],cur:null,loaded:false,mode:'local',saveState:'idle',confirm:null,chartEx:null,histoN:40,imp:null,importing:false,mergeMsg:'',tpls:[],progMsg:'',tplBusy:false,ana:{sid:null,busy:false,error:null,live:null},wkStart:Number(lsGet('carnet-muscu.wkstart','1')),wkMode:lsGet('carnet-muscu.wkmode','cycle'),cycTitle:lsGet('carnet-muscu.cyctitle',''),wkOff:0,weeks:{},wana:{ws:null,busy:false,error:null,live:null},coach:{busy:false,error:null,live:null}};
+  var state={tab:'seance',sessions:[],cur:null,loaded:false,saveState:'idle',confirm:null,chartEx:null,histoN:40,imp:null,importing:false,ana:{sid:null,busy:false,error:null,live:null},wkStart:Number(lsGet('carnet-muscu.wkstart','1')),wkMode:lsGet('carnet-muscu.wkmode','cycle'),cycTitle:lsGet('carnet-muscu.cyctitle',''),wkOff:0,weeks:{},wana:{ws:null,busy:false,error:null,live:null},coach:{busy:false,error:null,live:null}};
   var rTimer=null,saveTimer=null,chain=Promise.resolve(),dirty=false,confirmTimer=null;
-  var anaAbort=null, wkAbort=null, coachAbort=null;
+  var anaAbort=null,wkAbort=null,coachAbort=null;
   var _gmapCache=null,_nameListCache=null;
 
   function invalidateCaches(){_gmapCache=null;_nameListCache=null;}
-  function normKey(s){
-    return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
-  }
+  function normKey(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();}
 
   function uid8(){return Math.random().toString(36).slice(2,10)}
   function pad(n){return String(n).padStart(2,'0')}
@@ -231,12 +222,29 @@ nav button[aria-current="page"]{color:var(--fg); border-top-color:var(--accent)}
   }
 
   function lsGet(k,d){try{var v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}}
+  var GN={'Extenseurs des bras':'Triceps','Fléchisseurs des bras':'Biceps','Muscles dorsaux':'Dos','Muscles lombaires':'Lombaires','Extenseurs des poignets':'Avant-bras','Fléchisseurs des poignets':'Avant-bras'};
+  function normG(s){
+    var out=[];
+    String(s||'').replace(/ /g,' ').split(',').forEach(function(x){x=x.trim();if(!x)return;x=GN[x]||x;if(out.indexOf(x)<0)out.push(x)});
+    return out;
+  }
+  var HEUR=[
+    [/leg curl|ischio|roumain|soulev[ée] de terre|good.?morning/i,'Ischio-jambiers'],
+    [/hip thrust|fessier/i,'Fessiers'],
+    [/squat|presse|fentes|leg ext|hack|extension des jambes/i,'Quadriceps'],
+    [/mollet/i,'Mollets'],
+    [/abdo|crunch|gainage|relev[ée] de jambes|relev[ée] du buste/i,'Abdominaux'],
+    [/curl|biceps/i,'Biceps'],
+    [/triceps|jm press|barre au front|dips|kickback|extension/i,'Triceps'],
+    [/[ée]l[ée]vation lat|militaire|d[ée]velopp[ée] (devant|avec halt[eè]res, assis|[ée]paules)|oiseau|tirage au visage|face pull/i,'Épaules'],
+    [/d[ée]velopp[ée]|[ée]cart[ée]|pec|pompes/i,'Pectoraux'],
+    [/traction|tirage|rowing|row|pull|dorsal/i,'Dos']
+  ];
+
+  /* ---------- Stockage local ---------- */
   function localLoad(){try{return JSON.parse(localStorage.getItem(LS_KEY)||'[]')}catch(e){return []}}
   function localSave(){try{localStorage.setItem(LS_KEY,JSON.stringify(state.sessions))}catch(e){}}
 
-  /* ============================================================
-     COUCHE IA — DeepSeek via le backend local (/api/chat)
-     ============================================================ */
   async function getSample(){
     return async function(prompt, options){
       const res = await fetch('/api/chat', {
@@ -276,12 +284,9 @@ nav button[aria-current="page"]{color:var(--fg); border-top-color:var(--accent)}
     };
   }
 
-  /* ---------- Stockage local uniquement ---------- */
   function initStore(){
-    state.mode='local';
     state.sessions=localLoad();
     try{state.weeks=JSON.parse(lsGet('carnet-muscu.weeks','{}'))}catch(e){state.weeks={}}
-    state.tpls=tplLoadLocal();
     onSessions();
   }
 
@@ -327,23 +332,6 @@ nav button[aria-current="page"]{color:var(--fg); border-top-color:var(--accent)}
       state.sessions=state.sessions.filter(function(x){return x.id!==id});localSave();
       invalidateCaches();
     }catch(e){state.saveState='error'}
-  }
-
-  /* ---------- Programmes ---------- */
-  function tplSort(a,b){return (a.order||0)-(b.order||0)}
-  function tplLoadLocal(){try{return JSON.parse(lsGet('carnet-muscu.tpls','[]')).sort(tplSort)}catch(e){return []}}
-  function tplLocalSave(){try{localStorage.setItem('carnet-muscu.tpls',JSON.stringify(state.tpls))}catch(e){}}
-  async function tplPut(t){
-    var i=state.tpls.findIndex(function(x){return x.id===t.id});
-    if(i>=0)state.tpls[i]=t;else state.tpls.push(t);
-    state.tpls.sort(tplSort);tplLocalSave();return true;
-  }
-  async function tplDel(id){
-    state.tpls=state.tpls.filter(function(x){return x.id!==id});tplLocalSave();return true;
-  }
-  function tplByTitle(title){
-    var k=normKey(title);
-    return state.tpls.filter(function(x){return normKey(x.title)===k})[0];
   }
 
   /* ---------- Séance ---------- */
@@ -412,7 +400,6 @@ nav button[aria-current="page"]{color:var(--fg); border-top-color:var(--accent)}
         '<input id="sname" class="sname" autocomplete="off" placeholder="Nom de la séance" value="'+esc(c.title||'')+'">'+
         '<p id="sum" class="sum"></p>'+
       '</header>'+
-      '<section id="progs"></section>'+
       empty+
       '<div id="exs">'+c.exercises.map(exHTML).join('')+'</div>'+
       '<section class="add"><label class="lbl" for="newex">Ajouter un exercice</label>'+
@@ -431,6 +418,153 @@ nav button[aria-current="page"]{color:var(--fg); border-top-color:var(--accent)}
     if(focusSel){var f=$(focusSel);if(f){f.focus({preventScroll:true});if(f.select)f.select()}}
   }
 
+  /* ---------- Import GymBook ---------- */
+  function csvParse(txt){
+    var rows=[],row=[],f='',q=false,i=0,n=txt.length;
+    if(txt.charCodeAt(0)===0xFEFF)i=1;
+    for(;i<n;i++){
+      var ch=txt[i];
+      if(q){if(ch==='"'){if(txt[i+1]==='"'){f+='"';i++}else q=false}else f+=ch}
+      else if(ch==='"')q=true;
+      else if(ch===','){row.push(f);f=''}
+      else if(ch==='\n'||ch==='\r'){if(ch==='\r'&&txt[i+1]==='\n')i++;row.push(f);f='';if(row.length>1||row[0]!=='')rows.push(row);row=[]}
+      else f+=ch;
+    }
+    if(f!==''||row.length){row.push(f);rows.push(row)}
+    return rows;
+  }
+  function pnum(s){var m=String(s||'').replace(/[\s  ]/g,'').match(/-?\d+(?:[.,]\d+)?/);return m?Number(m[0].replace(',','.')):null}
+  function slug(s){return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)}
+  function buildImport(rows){
+    var h=(rows[0]||[]).map(function(x){return String(x).trim().normalize('NFC')});
+    function col(pred){for(var k=0;k<h.length;k++){if(pred(h[k]))return k}return -1}
+    var ix={
+      date:col(function(x){return x==='Date'}),
+      title:col(function(x){return x.indexOf('Entra')===0}),
+      time:col(function(x){return x==='Heure'}),
+      ex:col(function(x){return x==='Exercice'}),
+      type:col(function(x){return x.indexOf('chauffement')>=0}),
+      rep:col(function(x){return x.indexOf('pétitions')>=0}),
+      w:col(function(x){return x.indexOf('Poids')===0}),
+      skip:col(function(x){return x.indexOf('Saut')===0}),
+      prim:col(function(x){return x.indexOf('Primaires')>=0}),
+      sec:col(function(x){return x.indexOf('Secondaires')>=0}),
+      note:col(function(x){return x==='Notes'})
+    };
+    if(ix.date<0||ix.ex<0||ix.type<0||ix.rep<0||ix.w<0||ix.skip<0)return {error:'Format non reconnu. Choisissez un export CSV de GymBook.'};
+    var map=new Map(),st={skipped:0,warm:0,empty:0,sets:0},days=new Set();
+    for(var r=1;r<rows.length;r++){
+      var row=rows[r];if(row.length<h.length-1)continue;
+      if(String(row[ix.skip]).trim()==='Oui'){st.skipped++;continue}
+      if(String(row[ix.type]).indexOf('chauffement')>=0){st.warm++;continue}
+      var dm=String(row[ix.date]).trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(!dm)continue;
+      var iso=dm[3]+'-'+pad(dm[2])+'-'+pad(dm[1]);
+      var title=ix.title>=0?String(row[ix.title]).trim():'',name=String(row[ix.ex]).trim();
+      if(!name)continue;
+      var repTxt=String(row[ix.rep]),wTxt=String(row[ix.w]),v=pnum(repTxt),set={reps:null,kg:null};
+      if(/minute/i.test(repTxt))set.t=Math.round((v||0)*60);
+      else if(/seconde/i.test(repTxt))set.t=Math.round(v||0);
+      else set.reps=v==null?null:Math.round(v);
+      var wv=pnum(wTxt);
+      if(/km/i.test(wTxt)){if(wv)set.km=wv}else if(wv!=null)set.kg=wv;
+      var nt=ix.note>=0?String(row[ix.note]||'').trim():'';
+      if(nt)set.n=nt.slice(0,80);
+      if(!(set.reps>0||set.t>0||set.km>0)){st.empty++;continue}
+      var key=iso+'|'+title,s=map.get(key);
+      if(!s){s={id:'imp-'+iso.replace(/-/g,'')+'-'+(slug(title)||'seance'),date:iso,title:title,exercises:[],note:'',updatedAt:0,_x:new Map()};map.set(key,s)}
+      var kx=normKey(name),ex=s._x.get(kx);
+      if(!ex){
+        ex={id:uid8(),name:name,sets:[]};
+        var gp=ix.prim>=0?normG(row[ix.prim]):[];if(gp.length)ex.g=gp;
+        var gs=ix.sec>=0?normG(row[ix.sec]):[];if(gs.length)ex.g2=gs;
+        s._x.set(kx,ex);s.exercises.push(ex);
+      }
+      ex.sets.push(set);st.sets++;days.add(iso);
+      var tm=String(row[ix.time]||'').match(/(\d{1,2}):(\d{2})/);
+      var stamp=parseDate(iso).getTime()+(tm?(Number(tm[1])*60+Number(tm[2]))*60000:0);
+      if(stamp>s.updatedAt)s.updatedAt=stamp;
+    }
+    var byDate={},drop=[];
+    map.forEach(function(s){(byDate[s.date]=byDate[s.date]||[]).push(s)});
+    Object.keys(byDate).forEach(function(d){
+      var L=byDate[d],titled=L.filter(function(s){return s.title}),blank=L.filter(function(s){return !s.title});
+      if(titled.length===1&&blank.length){
+        var T=titled[0];
+        blank.forEach(function(b){
+          b.exercises.forEach(function(e){
+            var f=T.exercises.filter(function(x){return normKey(x.name)===normKey(e.name)})[0];
+            if(f)f.sets=f.sets.concat(e.sets);else T.exercises.push(e);
+          });
+          if(b.updatedAt>T.updatedAt)T.updatedAt=b.updatedAt;
+          drop.push(b.id);
+        });
+      }
+    });
+    var out=[],seen={};
+    map.forEach(function(s){delete s._x;var id=s.id,n=2;while(seen[id])id=s.id+'-'+(n++);seen[id]=1;s.id=id;out.push(s)});
+    var ds=Array.from(days).sort();
+    st.sessions=out.length;st.days=days.size;st.first=ds[0];st.last=ds[ds.length-1];
+    return {sessions:out,stats:st,drop:drop};
+  }
+  async function handleImpFile(file){
+    if(!file)return;
+    state.imp={reading:true};
+    renderHisto();
+    try{
+      var buf=new Uint8Array(await file.arrayBuffer()),enc='utf-8';
+      if(buf[0]===0xFF&&buf[1]===0xFE)enc='utf-16le';else if(buf[0]===0xFE&&buf[1]===0xFF)enc='utf-16be';
+      var res=buildImport(csvParse(new TextDecoder(enc).decode(buf)));
+      if(res.error)state.imp={error:res.error};
+      else if(!res.sessions.length)state.imp={error:'Aucune série effectuée trouvée dans ce fichier.'};
+      else state.imp={sessions:res.sessions,stats:res.stats,drop:res.drop};
+    }catch(e){state.imp={error:'Lecture du fichier impossible.'}}
+    renderHisto();
+  }
+  async function runImport(){
+    var m=state.imp;if(!m||m.busy)return;
+    m.busy=true;m.done=0;m.failed=0;state.importing=true;renderHisto();
+    var list=m.sessions,idx=0,total=list.length;
+    function prog(){var el=$('#impstat');if(el)el.textContent='Import en cours : '+(m.done+m.failed)+' / '+total+' séances'}
+    async function writeOne(s){
+      var i=state.sessions.findIndex(function(x){return x.id===s.id});
+      if(i>=0)state.sessions[i]=s;else state.sessions.push(s);
+      return true;
+    }
+    async function worker(){
+      while(idx<total){var s=list[idx++];var ok=await writeOne(clone(s));if(ok)m.done++;else m.failed++;prog()}
+    }
+    await Promise.all([worker(),worker(),worker()]);
+    var dr=m.drop||[];
+    for(var di=0;di<dr.length;di++){state.sessions=state.sessions.filter(function(x){return x.id!==dr[di]})}
+    localSave();
+    invalidateCaches();
+    m.busy=false;m.finished=true;state.importing=false;
+    renderHisto();
+  }
+  function fmtFull(s){return parseDate(s).toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'})}
+  function impHTML(){
+    var m=state.imp,body='';
+    var pick='<label class="lbl" for="impfile">Fichier CSV</label><input id="impfile" type="file" accept=".csv,text/csv">';
+    if(!m){
+      body='<p class="hm">Reprenez vos séances depuis un export CSV de GymBook. Les séries sautées et les séries d\'échauffement ne sont pas importées ; les notes (RIR…) et les groupes musculaires sont repris.</p>'+pick;
+    }else if(m.reading){
+      body='<p class="hm" role="status">Lecture du fichier…</p>';
+    }else if(m.error){
+      body='<p class="hm" role="alert">'+esc(m.error)+'</p>'+pick;
+    }else if(m.busy){
+      body='<p id="impstat" class="hm" role="status">Import en cours : '+(m.done+m.failed)+' / '+m.sessions.length+' séances</p>';
+    }else if(m.finished){
+      body='<p class="hm" role="status"><strong>'+m.done+' séances importées</strong>'+(m.failed?' · '+m.failed+' non enregistrées':'')+'.</p>'+
+        '<div class="row"><button type="button" class="btn" data-act="imp-cancel">Fermer</button></div>';
+    }else{
+      var st=m.stats,ex=m.sessions.filter(function(s){return state.sessions.some(function(x){return x.id===s.id})}).length;
+      body='<div class="stats"><div class="stat"><b>'+st.sessions+'</b><span>séances</span></div><div class="stat"><b>'+num(st.sets,0)+'</b><span>séries effectuées</span></div><div class="stat"><b>'+st.days+'</b><span>jours d\'entraînement</span></div></div>'+
+        '<p class="hm">Du '+esc(fmtFull(st.first))+' au '+esc(fmtFull(st.last))+'. Ignorées : '+num(st.skipped,0)+' séries sautées, '+st.warm+' d\'échauffement'+(st.empty?', '+st.empty+' sans données':'')+'.'+(ex?' '+ex+' séances déjà importées seront remplacées.':'')+'</p>'+
+        '<div class="row"><button type="button" class="btn primary" data-act="imp-go">Importer '+st.sessions+' séances</button><button type="button" class="btn" data-act="imp-cancel">Annuler</button></div>';
+    }
+    return '<section class="imp" aria-label="Importer des séances"><h2>Importer depuis GymBook</h2>'+body+'</section>';
+  }
+
   /* ---------- Historique ---------- */
   function renderHisto(){
     var el=$('#v-histo'),list=allSessions();
@@ -438,7 +572,8 @@ nav button[aria-current="page"]{color:var(--fg); border-top-color:var(--accent)}
     var recent=list.filter(function(s){return parseDate(s.date).getTime()>=cutoff});
     var vol7=list.filter(function(s){return parseDate(s.date).getTime()>=wk}).reduce(function(a,s){return a+sessVol(s)},0);
     var head='<header class="head"><h1>Historique</h1><p class="sum">'+(list.length?num(list.length,0)+(list.length>1?' séances':' séance'):'Aucune séance')+'</p></header>';
-    if(!list.length){el.innerHTML=head+'<div class="empty"><strong>Rien ici</strong>Votre première séance apparaîtra ici.</div>';return}
+    var imp=impHTML();
+    if(!list.length){el.innerHTML=head+'<div class="empty"><strong>Rien ici</strong>Votre première séance apparaîtra ici, ou importez vos séances ci-dessous.</div>'+imp;return}
     var stats='<div class="stats"><div class="stat"><b>'+recent.length+'</b><span>séances / 30 j</span></div><div class="stat"><b>'+num(vol7,0)+'</b><span>kg volume / 7 j</span></div></div>';
     var shown=list.slice(0,state.histoN);
     var items=shown.map(function(s){
@@ -449,7 +584,7 @@ nav button[aria-current="page"]{color:var(--fg); border-top-color:var(--accent)}
         '<div class="hm">'+(s.title?esc(s.title)+' · ':'')+setCount(s)+' séries · '+num(sessVol(s),0)+' kg</div></div></button>';
     }).join('');
     var more=list.length>shown.length?'<button type="button" class="btn" data-act="more">Afficher plus</button>':'';
-    el.innerHTML=head+stats+items+more;
+    el.innerHTML=head+stats+items+more+imp;
   }
 
   /* ---------- Progression ---------- */
@@ -559,7 +694,7 @@ nav button[aria-current="page"]{color:var(--fg); border-top-color:var(--accent)}
     }catch(e){
       if(signal.aborted)return;
       a.busy=false;a.live=null;
-      a.error="L'analyse a échoué. Vérifiez que le serveur tourne. "+((e&&e.message)||'');
+      a.error="L'analyse a échoué. "+((e&&e.message)||'');
       if(state.cur===c)showAna();
     }
   }
@@ -574,24 +709,6 @@ nav button[aria-current="page"]{color:var(--fg); border-top-color:var(--accent)}
     return {start:isoOf(d),end:isoOf(e)};
   }
   function sessionsIn(a,b){return allSessions().filter(function(s){return s.date>=a&&s.date<=b})}
-  var GN={'Extenseurs des bras':'Triceps','Fléchisseurs des bras':'Biceps','Muscles dorsaux':'Dos','Muscles lombaires':'Lombaires','Extenseurs des poignets':'Avant-bras','Fléchisseurs des poignets':'Avant-bras'};
-  function normG(s){
-    var out=[];
-    String(s||'').replace(/ /g,' ').split(',').forEach(function(x){x=x.trim();if(!x)return;x=GN[x]||x;if(out.indexOf(x)<0)out.push(x)});
-    return out;
-  }
-  var HEUR=[
-    [/leg curl|ischio|roumain|soulev[ée] de terre|good.?morning/i,'Ischio-jambiers'],
-    [/hip thrust|fessier/i,'Fessiers'],
-    [/squat|presse|fentes|leg ext|hack|extension des jambes/i,'Quadriceps'],
-    [/mollet/i,'Mollets'],
-    [/abdo|crunch|gainage|relev[ée] de jambes|relev[ée] du buste/i,'Abdominaux'],
-    [/curl|biceps/i,'Biceps'],
-    [/triceps|jm press|barre au front|dips|kickback|extension/i,'Triceps'],
-    [/[ée]l[ée]vation lat|militaire|d[ée]velopp[ée] (devant|avec halt[eè]res, assis|[ée]paules)|oiseau|tirage au visage|face pull/i,'Épaules'],
-    [/d[ée]velopp[ée]|[ée]cart[ée]|pec|pompes/i,'Pectoraux'],
-    [/traction|tirage|rowing|row|pull|dorsal/i,'Dos']
-  ];
   function buildGmap(){
     if(_gmapCache)return _gmapCache;
     var m={};
@@ -778,8 +895,7 @@ nav button[aria-current="page"]{color:var(--fg); border-top-color:var(--accent)}
     return {
       date_du_jour:todayStr(),
       seance_en_cours:{date:c.date,titre:c.title||'',notes:c.note||'',exercices:c.exercises.map(function(e){return {nom:e.name,series:e.sets.map(fmtSetN)}})},
-      historique_recent:recent,
-      programmes:state.tpls.map(function(t){return {nom:t.title,exercices:t.exercises.map(function(e){return e.name+' ×'+e.sets})}})
+      historique_recent:recent
     };
   }
   function coachSystem(){
@@ -796,8 +912,7 @@ nav button[aria-current="page"]{color:var(--fg); border-top-color:var(--accent)}
     var out=[],c=state.cur;
     if(c.exercises.length)out.push("Comment était ma séance ?");
     out.push("Suis-je en surcharge progressive sur le squat ?");
-    if(state.tpls.length)out.push("Propose-moi une séance "+state.tpls[0].title);
-    else out.push("Propose-moi une séance Push");
+    out.push("Propose-moi une séance Push");
     out.push("Comment progresser au développé couché ?");
     return out.slice(0,4);
   }
@@ -926,6 +1041,8 @@ nav button[aria-current="page"]{color:var(--fg); border-top-color:var(--accent)}
     else if(act==='wk-next'){if(state.wkOff>0){state.wkOff--;renderBilan()}}
     else if(act==='wk-analyze'){analyzeWeek()}
     else if(act==='more'){state.histoN+=40;renderHisto()}
+    else if(act==='imp-go'){runImport()}
+    else if(act==='imp-cancel'){state.imp=null;renderHisto()}
     else if(act==='open'){
       var s=state.sessions.find(function(x){return x.id===t.dataset.id});
       if(!s)return;
@@ -955,6 +1072,7 @@ nav button[aria-current="page"]{color:var(--fg); border-top-color:var(--accent)}
     var t=ev.target;
     if(t.id==='sdate'&&/^\d{4}-\d{2}-\d{2}$/.test(t.value)){state.cur.date=t.value;$('#stitle').textContent=fmtLong(t.value);markDirty()}
     else if(t.id==='exsel'){state.chartEx=t.value;renderProg()}
+    else if(t.id==='impfile'){handleImpFile(t.files&&t.files[0])}
     else if(t.id==='wkmode'){state.wkMode=t.value==='cal'?'cal':'cycle';state.wkOff=0;try{localStorage.setItem('carnet-muscu.wkmode',state.wkMode)}catch(e){}renderBilan()}
     else if(t.id==='cyctitle'){state.cycTitle=t.value;state.wkOff=0;try{localStorage.setItem('carnet-muscu.cyctitle',state.cycTitle)}catch(e){}renderBilan()}
     else if(t.id==='wkstart'){state.wkStart=Number(t.value);state.wkOff=0;try{localStorage.setItem('carnet-muscu.wkstart',String(state.wkStart))}catch(e){}renderBilan()}
