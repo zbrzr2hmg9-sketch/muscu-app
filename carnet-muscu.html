@@ -699,33 +699,40 @@ body.focus-mode .wrap{padding-bottom:0}
 
   /* === Préparation / readiness === */
   function renderReady(){
-    var el=$('#v-ready'),r=state.readiness;
-    if(!r){
-      el.innerHTML='<header class="head"><h1>Préparation</h1><p class="sum">Comment te sens-tu ?</p></header>'+
-        '<div class="readybox"><div class="readyrow"><span class="rq">Sommeil</span><div class="readyseg" data-q="sleep">'+[1,2,3,4,5].map(function(n){return '<button type="button" data-act="ready-set" data-q="sleep" data-v="'+n+'">'+n+'</button>'}).join('')+'</div></div>'+
-        '<div class="readyrow"><span class="rq">Courbatures</span><div class="readyseg" data-q="soreness">'+[1,2,3,4,5].map(function(n){return '<button type="button" data-act="ready-set" data-q="soreness" data-v="'+n+'">'+n+'</button>'}).join('')+'</div></div>'+
-        '<div class="readyrow"><span class="rq">Motivation</span><div class="readyseg" data-q="motivation">'+[1,2,3,4,5].map(function(n){return '<button type="button" data-act="ready-set" data-q="motivation" data-v="'+n+'">'+n+'</button>'}).join('')+'</div></div>'+
+  var el=$('#v-ready'),r=state.readiness||{};
+  var complete=r.sleep&&r.soreness&&r.motivation;
+  if(!complete){
+    var sel=function(q){return [1,2,3,4,5].map(function(n){
+      return '<button type="button" data-act="ready-set" data-q="'+q+'" data-v="'+n+'"'+(r[q]===n?' style="background:var(--accent);border-color:var(--accent);color:var(--accent-fg)"':'')+'>'+n+'</button>';
+    }).join('')};
+    el.innerHTML='<header class="head"><h1>Préparation</h1><p class="sum">Comment te sens-tu ?</p></header>'+
+      '<div class="readybox">'+
+        '<div class="readyrow"><span class="rq">Sommeil</span><div class="readyseg">'+sel('sleep')+'</div></div>'+
+        '<div class="readyrow"><span class="rq">Courbatures</span><div class="readyseg">'+sel('soreness')+'</div></div>'+
+        '<div class="readyrow"><span class="rq">Motivation</span><div class="readyseg">'+sel('motivation')+'</div></div>'+
         '<p class="hm" style="margin-top:8px">1 = mauvais, 5 = excellent. Courbatures : 5 = aucune courbature.</p>'+
-        '<div class="foot-actions"><button type="button" class="btn" data-act="tab" data-tab="seance">Retour</button></div></div>';
-      return;
-    }
-    el.innerHTML='<header class="head"><h1>Préparation</h1><p class="sum">Score de récupération</p></header>'+
-      '<div class="readybox"><div class="readyscore">'+r.score+'/5</div><div class="readyhint">'+esc(r.advice||'')+'</div>'+
-      '<p class="hm" style="margin-top:8px">Sommeil '+r.sleep+' · Courbatures '+r.soreness+' · Motivation '+r.motivation+'</p>'+
-      '<div class="foot-actions"><button type="button" class="btn" data-act="tab" data-tab="seance">Aller à la séance</button><button type="button" class="btn" data-act="ready-reset">Refaire</button></div></div>';
+        (r.sleep||r.soreness||r.motivation?'<p class="hm">Encore '+(3-[r.sleep,r.soreness,r.motivation].filter(Boolean).length)+' réponse(s) à donner.</p>':'')+
+        '<div class="foot-actions"><button type="button" class="btn" data-act="tab" data-tab="seance">Retour</button></div>'+
+      '</div>';
+    return;
   }
+  el.innerHTML='<header class="head"><h1>Préparation</h1><p class="sum">Score de récupération</p></header>'+
+    '<div class="readybox"><div class="readyscore">'+r.score+'/5</div><div class="readyhint">'+esc(r.advice||'')+'</div>'+
+    '<p class="hm" style="margin-top:8px">Sommeil '+r.sleep+' · Courbatures '+r.soreness+' · Motivation '+r.motivation+'</p>'+
+    '<div class="foot-actions"><button type="button" class="btn" data-act="tab" data-tab="seance">Aller à la séance</button><button type="button" class="btn" data-act="ready-reset">Refaire</button></div></div>';
+}
   function computeReadiness(){
-    if(!state.readiness){renderReady();return}
-    var r=state.readiness;
-    if(!(r.sleep&&r.soreness&&r.motivation)){renderReady();return}
-    var score=Math.round((r.sleep+r.soreness+r.motivation)/3*10)/10;
-    var advice=score>=4.5?'Excellente récupération : tu peux viser un RIR 0 sur ta dernière série.':
-      score>=3.5?'Bonne récupération : RIR 1-2 sur les séries difficiles.':
-      score>=2.5?'Récupération moyenne : reste à RIR 2-3 et ne cherche pas de PR.':
-      'Récupération faible : privilégie un RIR 3-4, voire un allègement.';
-    state.readiness.score=score;state.readiness.advice=advice;
-    renderReady();
-  }
+  if(!state.readiness){renderReady();return}
+  var r=state.readiness;
+  if(!(r.sleep&&r.soreness&&r.motivation)){renderReady();return}
+  var score=Math.round((r.sleep+r.soreness+r.motivation)/3*10)/10;
+  var advice=score>=4.5?'Excellente récupération : tu peux viser un RIR 0 sur ta dernière série.':
+    score>=3.5?'Bonne récupération : RIR 1-2 sur les séries difficiles.':
+    score>=2.5?'Récupération moyenne : reste à RIR 2-3 et ne cherche pas de PR.':
+    'Récupération faible : privilégie un RIR 3-4, voire un allègement.';
+  r.score=score;r.advice=advice;
+  renderReady();
+}
 
   /* === Tour de bras === */
   function renderBicep(){
