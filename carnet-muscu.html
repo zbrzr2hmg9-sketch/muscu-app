@@ -44,7 +44,7 @@ h3{font-family:var(--display); font-weight:600; font-size:17px; margin:0}
 .badge-jours .check{color:var(--accent); font-size:12px}
 .info-btn{background:transparent; border:2px solid var(--accent); color:var(--accent); width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; cursor:pointer}
 .chevron{color:#C7C7CC; font-size:20px; font-weight:400}
-.icon-btn{background:var(--bg); border:0; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--fg)}
+.icon-btn{background:transparent; border:0; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; color:var(--muted)}
 .btn{min-height:44px; padding:0 16px; border-radius:10px; border:1px solid var(--rule); background:var(--surface); font-weight:600; font-size:15px}
 .btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
 .btn.ghost{background:transparent; border-color:transparent; color:var(--accent)}
@@ -55,25 +55,30 @@ nav{position:fixed; left:0; right:0; bottom:0; background:var(--surface); border
 nav button{background:none; border:0; display:flex; flex-direction:column; align-items:center; gap:4px; color:var(--muted); font-size:10px; font-weight:600; padding:0 8px; flex:1}
 nav button svg{width:24px; height:24px; fill:currentColor}
 nav button.active{color:var(--accent)}
-/* Séance active */
-.ex-card{background:var(--surface); border-radius:12px; padding:14px; margin-bottom:12px}
-.set-row{display:grid; grid-template-columns:30px 1fr 1fr 1fr 36px; gap:8px; align-items:center; margin-bottom:6px}
-.set-row .idx{font-weight:700; color:var(--muted); text-align:center}
-.set-row input{height:44px; text-align:center; font-size:18px; font-weight:700; border-radius:8px; border:1px solid var(--rule); background:var(--bg)}
-/* Historique Calendrier */
-.cal{background:var(--surface); border-radius:16px; padding:16px; margin-bottom:16px}
-.cal-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px}
-.cal-head button{background:none; border:0; color:var(--muted); font-size:20px; padding:8px}
-.cal-grid{display:grid; grid-template-columns:repeat(7, 1fr); text-align:center; gap:8px 0}
-.cal-day-name{font-size:12px; font-weight:600; color:var(--muted); padding-bottom:8px}
-.cal-day{position:relative; padding:8px 0; font-size:15px; font-weight:500; cursor:pointer; border-radius:50%}
-.cal-day.has-workout{color:var(--accent); font-weight:700}
-.cal-day.has-workout::after{content:''; position:absolute; bottom:2px; left:50%; transform:translateX(-50%); width:6px; height:6px; border-radius:50%; background:var(--accent)}
-.cal-day.selected{background:var(--accent-light)}
-/* Mensurations */
-.m-row{display:flex; justify-content:space-between; padding:16px; border-bottom:1px solid var(--rule); font-size:16px}
-.m-row:last-child{border-bottom:0}
-.m-val{font-weight:600; color:var(--muted)}
+
+/* Écran Séance (Pull A) */
+.session-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px}
+.ex-row{display:flex; align-items:center; padding:16px; border-bottom:1px solid var(--rule); gap:12px; cursor:pointer}
+.ex-row:last-child{border-bottom:0}
+.ex-illu{width:50px; height:50px; background:#F0F0F5; border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:10px; flex-shrink:0}
+.ex-info{flex:1; display:flex; flex-direction:column; gap:4px}
+.ex-title{font-weight:600; font-size:16px; color:var(--fg)}
+.ex-sub{font-size:13px; color:var(--muted)}
+
+/* Écran Exercice (Curl Pupitre) */
+.exo-detail-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px}
+.exo-detail-title{font-size:32px; font-weight:800; line-height:1.1; letter-spacing:-0.5px; margin-bottom:20px}
+.set-history-row{display:flex; align-items:center; padding:12px 0; border-bottom:1px solid var(--rule); gap:16px}
+.set-circle{width:32px; height:32px; border-radius:50%; background:#E8E8ED; color:#555; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0}
+.set-main{font-size:18px; font-weight:600}
+.set-main span{color:var(--muted); font-size:14px; font-weight:500}
+.set-history-text{flex:1; text-align:right; color:var(--muted); font-size:13px; line-height:1.6}
+.set-history-text u{text-decoration:underline; text-decoration-color:#C7C7CC}
+.chart-container{background:var(--surface); border-radius:16px; padding:16px; margin-top:16px}
+.chart-svg{width:100%; height:auto; overflow:visible}
+.timer-bar{position:fixed; bottom:64px; left:0; right:0; background:var(--surface); border-top:1px solid var(--rule); padding:12px 16px; display:flex; align-items:center; gap:16px; z-index:10}
+.timer-display{font-family:monospace; font-size:24px; font-weight:700; color:var(--muted); flex:1; text-align:center}
+
 /* Coach Chat */
 .chat-container{display:flex; flex-direction:column; gap:12px; margin-bottom:16px}
 .msg{max-width:85%; padding:12px 16px; border-radius:20px; font-size:15px; line-height:1.4}
@@ -89,6 +94,7 @@ nav button.active{color:var(--accent)}
     <section id="v-mensurations" aria-label="Mensurations" hidden></section>
     <section id="v-reglages" aria-label="Réglages" hidden></section>
     <section id="v-seance" aria-label="Séance en cours" hidden></section>
+    <section id="v-exo-detail" aria-label="Détail exercice" hidden></section>
     <section id="v-coach" aria-label="Coach IA" hidden></section>
   </main>
 </div>
@@ -115,46 +121,50 @@ nav button.active{color:var(--accent)}
   </button>
 </nav>
 
+<div class="timer-bar" id="timer-bar" hidden>
+  <div class="timer-display" id="timer-display">00:00:00</div>
+  <button class="btn primary" data-act="timer-toggle" id="timer-btn">Start</button>
+  <button class="icon-btn" data-act="timer-reset" style="font-size:16px">↺</button>
+</div>
+
 <script>
 (function(){
   var $=function(s,r){return (r||document).querySelector(s)};
   var LS_KEY='carnet-muscu.v1';
-  var state={tab:'entrainements',sessions:[],cur:null,templates:[],metrics:[],loaded:false,saveState:'idle'};
+  var state={tab:'entrainements',sessions:[],cur:null,templates:[],metrics:[],loaded:false,currentExo:null,currentSession:null,chat:[]};
   var currentDate = new Date();
   var calMonth = currentDate.getMonth();
   var calYear = currentDate.getFullYear();
-  var chatAbort=null;
+  
+  var timerInt = null;
+  var timerSec = 0;
+  var timerRunning = false;
 
   function uid8(){return Math.random().toString(36).slice(2,10)}
   function pad(n){return String(n).padStart(2,'0')}
   function todayStr(){var d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
   function parseDate(s){var p=s.split('-').map(Number);return new Date(p[0],p[1]-1,p[2])}
   function fmtShort(s){return parseDate(s).toLocaleDateString('fr-FR',{day:'numeric',month:'short'})}
-  function num(n,d){return Number(n).toLocaleString('fr-FR',{maximumFractionDigits:d==null?1:d})}
   function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
   function lsGet(k,d){try{var v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}}
 
   function initStore(){
     try{state.sessions=JSON.parse(localStorage.getItem(LS_KEY)||'[]')}catch(e){state.sessions=[]}
     try{state.templates=JSON.parse(lsGet('carnet-muscu.templates','[]'))}catch(e){state.templates=[]}
-    try{state.metrics=JSON.parse(lsGet('carnet-muscu.metrics','[]'))}catch(e){state.metrics=[]}
-    // Templates par défaut si vide
+    
     if(!state.templates.length){
       state.templates = [
-        {id:'t1', title:'Pull A', desc:'Pectoraux Dos Bras', exercises:['Tractions','Rowing barre','Curl biceps']},
+        {id:'t1', title:'Pull A', desc:'Pectoraux Dos Bras', exercises:['Curl Pupitre à Un Bras avec Haltère, Debout','Curl à la Barre','Rowing à la Barre, Buste Penché, Prise Inversée','Pull-Over avec Haltère','Curl à la Barre, Prise Inversée','Haussement d\'Épaules à la Barre Hexagonale']},
         {id:'t2', title:'Push A', desc:'Épaules Pectoraux Bras', exercises:['Développé couché','Développé militaire','Dips']},
-        {id:'t3', title:'Legs', desc:'Dos Jambes', exercises:['Squat','Soulevé de terre','Presse à cuisses']},
-        {id:'t4', title:'Pull B', desc:'Épaules Dos Bras', exercises:['Tirage vertical','Rowing haltère','Curl marteau']},
-        {id:'t5', title:'Push B', desc:'Épaules Pectoraux Bras', exercises:['Développé incliné','Élévations latérales','Barre au front']}
+        {id:'t3', title:'Legs', desc:'Dos Jambes', exercises:['Squat','Soulevé de terre','Presse à cuisses']}
       ];
       saveTemplates();
     }
-    state.loaded=true;
+    state.loaded = true;
     renderAll();
   }
   function saveSessions(){try{localStorage.setItem(LS_KEY,JSON.stringify(state.sessions))}catch(e){}}
   function saveTemplates(){try{localStorage.setItem('carnet-muscu.templates',JSON.stringify(state.templates))}catch(e){}}
-  function saveMetrics(){try{localStorage.setItem('carnet-muscu.metrics',JSON.stringify(state.metrics))}catch(e){}}
 
   async function getSample(){
     return async function(prompt, options){
@@ -182,12 +192,11 @@ nav button.active{color:var(--accent)}
     };
   }
 
-  /* ---------- RENDU : ENTRAINEMENTS ---------- */
+  /* --- RENDU : ENTRAINEMENTS (Liste) --- */
   function renderEntrainements(){
     var el = $('#v-entrainements');
     var today = new Date();
     var tplsHtml = state.templates.map(function(t){
-      // Trouver la dernière fois que cette séance a été faite
       var lastDone = state.sessions.filter(s => s.title === t.title).sort((a,b)=>b.date.localeCompare(a.date))[0];
       var daysAgo = 'Nouveau';
       if(lastDone){
@@ -196,57 +205,27 @@ nav button.active{color:var(--accent)}
       }
       return `
         <div class="row" data-act="start-tpl" data-id="${t.id}">
-          <div class="r-left">
-            <div class="r-title">${esc(t.title)}</div>
-            <div class="r-sub">${esc(t.desc)}</div>
-          </div>
-          <div class="r-right">
-            <div class="badge-jours"><span class="check">✓</span> ${daysAgo}</div>
-            <div class="info-btn">i</div>
-            <div class="chevron">›</div>
-          </div>
+          <div class="r-left"><div class="r-title">${esc(t.title)}</div><div class="r-sub">${esc(t.desc)}</div></div>
+          <div class="r-right"><div class="badge-jours"><span class="check">✓</span> ${daysAgo}</div><div class="info-btn">i</div><div class="chevron">›</div></div>
         </div>
       `;
     }).join('');
 
-    el.innerHTML = `
-      <div class="head">
-        <h1>Entraînements</h1>
-        <div class="line"></div>
-      </div>
-      <div class="card">
-        ${tplsHtml}
-      </div>
-    `;
+    el.innerHTML = `<div class="head"><h1>Entraînements</h1><div class="line"></div></div><div class="card">${tplsHtml}</div>`;
   }
 
-  /* ---------- RENDU : EXERCICES ---------- */
+  /* --- RENDU : EXERCICES --- */
   function renderExercices(){
-    var el = $('#v-exercices');
-    el.innerHTML = `
-      <div class="head">
-        <h1>Exercices</h1>
-        <div class="sub">489 / 491 Exercices</div>
-        <div class="line"></div>
-      </div>
-      <div style="background:var(--bg); border-radius:10px; padding:8px 12px; margin-bottom:16px; display:flex; align-items:center; gap:8px">
-        <span style="color:var(--muted)">🔍</span>
-        <input type="text" placeholder="Recherche" style="border:0; background:transparent; padding:0; font-size:16px">
-      </div>
-      <h2 style="font-size:20px">Épaules</h2>
-      <div class="card" style="border-radius:12px; padding:16px; text-align:center; color:var(--muted)">
-        La liste complète des exercices sera intégrée ici.
-      </div>
-    `;
+    $('#v-exercices').innerHTML = `<div class="head"><h1>Exercices</h1><div class="line"></div></div><div class="card" style="padding:16px;text-align:center;color:var(--muted)">Recherche bientôt disponible.</div>`;
   }
 
-  /* ---------- RENDU : HISTORIQUE ---------- */
+  /* --- RENDU : HISTORIQUE --- */
   function renderHistorique(){
     var el = $('#v-historique');
     var monthNames = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
     var firstDay = new Date(calYear, calMonth, 1).getDay();
     var daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-    var offset = (firstDay === 0 ? 6 : firstDay - 1); // Lundi = 0
+    var offset = (firstDay === 0 ? 6 : firstDay - 1);
 
     var daysHtml = '';
     for (var i = 0; i < offset; i++) daysHtml += '<div></div>';
@@ -257,186 +236,165 @@ nav button.active{color:var(--accent)}
     }
 
     el.innerHTML = `
-      <div class="head">
-        <h1>Historique</h1>
-        <div class="line"></div>
-      </div>
-      <div class="card">
-        <div class="row" style="justify-content:flex-start">
-          <div class="r-title">Entraînements</div>
-          <div class="chevron">›</div>
-        </div>
-      </div>
+      <div class="head"><h1>Historique</h1><div class="line"></div></div>
+      <div class="card"><div class="row"><div class="r-title">Entraînements</div><div class="chevron">›</div></div></div>
       <div class="cal">
-        <div class="cal-head">
-          <button data-act="cal-prev">‹</button>
-          <div style="font-weight:700; font-size:18px">${monthNames[calMonth]} ${calYear}</div>
-          <button data-act="cal-next">›</button>
-        </div>
-        <div class="cal-grid">
-          <div class="cal-day-name">L</div><div class="cal-day-name">M</div><div class="cal-day-name">M</div>
-          <div class="cal-day-name">J</div><div class="cal-day-name">V</div><div class="cal-day-name">S</div><div class="cal-day-name">D</div>
-          ${daysHtml}
-        </div>
+        <div class="cal-head"><button data-act="cal-prev">‹</button><div style="font-weight:700; font-size:18px">${monthNames[calMonth]} ${calYear}</div><button data-act="cal-next">›</button></div>
+        <div class="cal-grid"><div class="cal-day-name">L</div><div class="cal-day-name">M</div><div class="cal-day-name">M</div><div class="cal-day-name">J</div><div class="cal-day-name">V</div><div class="cal-day-name">S</div><div class="cal-day-name">D</div>${daysHtml}</div>
       </div>
     `;
   }
 
-  /* ---------- RENDU : MENSURATIONS ---------- */
+  /* --- RENDU : MENSURATIONS --- */
   function renderMensurations(){
-    var el = $('#v-mensurations');
-    // Récupérer la dernière valeur de chaque métrique
-    function getLastVal(key, defaultVal) {
-      var m = state.metrics.filter(x => x.key === key).sort((a,b)=>b.date.localeCompare(a.date))[0];
-      return m ? m.value + ' ' + (m.unit||'') : defaultVal;
-    }
-
-    el.innerHTML = `
-      <div class="head">
-        <h1>Mensurations</h1>
-        <div class="line"></div>
-      </div>
-      <h2 style="font-size:16px; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; margin-bottom:8px; margin-left:8px">Informations de base</h2>
+    $('#v-mensurations').innerHTML = `
+      <div class="head"><h1>Mensurations</h1><div class="line"></div></div>
+      <h2 style="font-size:16px; text-transform:uppercase; color:var(--muted); margin-left:8px">Informations de base</h2>
       <div class="card">
-        <div class="row" data-act="add-metric" data-key="Poids" data-unit="kg" data-default="83,70">
-          <div class="r-left"><div class="r-title">Poids</div></div>
-          <div class="r-right"><div class="m-val">${getLastVal('Poids', '83,70 kg')}</div><div class="chevron">›</div></div>
-        </div>
-        <div class="row">
-          <div class="r-left"><div class="r-title">Taille</div></div>
-          <div class="r-right"><div class="m-val">1,77 m</div><div class="chevron">›</div></div>
-        </div>
-        <div class="row" data-act="add-metric" data-key="Masse grasse" data-unit="%" data-default="17,11">
-          <div class="r-left"><div class="r-title">Indice de masse grasse</div></div>
-          <div class="r-right"><div class="m-val">${getLastVal('Masse grasse', '17,11 %')}</div><div class="chevron">›</div></div>
-        </div>
-        <div class="row">
-          <div class="r-left"><div class="r-title">Eau corporelle</div></div>
-          <div class="r-right"><div class="m-val">-</div><div class="chevron">›</div></div>
-        </div>
-        <div class="row">
-          <div class="r-left"><div class="r-title">Masse musculaire</div></div>
-          <div class="r-right"><div class="m-val">-</div><div class="chevron">›</div></div>
-        </div>
-      </div>
-
-      <h2 style="font-size:16px; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; margin:20px 0 8px 8px">Circonférences</h2>
-      <div class="card">
-        <div class="row" data-act="add-metric" data-key="Cou" data-unit="cm" data-default="38">
-          <div class="r-left"><div class="r-title">Cou</div></div>
-          <div class="r-right"><div class="m-val">${getLastVal('Cou', '38,50 cm')}</div><div class="chevron">›</div></div>
-        </div>
-        <div class="row" data-act="add-metric" data-key="Biceps" data-unit="cm" data-default="36.5">
-          <div class="r-left"><div class="r-title">Bras (Biceps)</div></div>
-          <div class="r-right"><div class="m-val">${getLastVal('Biceps', '36,50 cm')}</div><div class="chevron">›</div></div>
-        </div>
-        <div class="row" data-act="add-metric" data-key="Épaules" data-unit="cm" data-default="120">
-          <div class="r-left"><div class="r-title">Épaules</div></div>
-          <div class="r-right"><div class="m-val">${getLastVal('Épaules', '120 cm')}</div><div class="chevron">›</div></div>
-        </div>
+        <div class="row"><div class="r-left"><div class="r-title">Poids</div></div><div class="r-right"><div class="r-sub">83,70 kg</div><div class="chevron">›</div></div></div>
+        <div class="row"><div class="r-left"><div class="r-title">Taille</div></div><div class="r-right"><div class="r-sub">1,77 m</div><div class="chevron">›</div></div></div>
       </div>
     `;
   }
 
-  /* ---------- RENDU : REGLAGES ---------- */
+  /* --- RENDU : REGLAGES --- */
   function renderReglages(){
-    var el = $('#v-reglages');
-    el.innerHTML = `
-      <div class="head">
-        <h1>Réglages</h1>
-        <div class="line"></div>
-      </div>
+    $('#v-reglages').innerHTML = `
+      <div class="head"><h1>Réglages</h1><div class="line"></div></div>
       <div class="card">
-        <div class="row" data-act="tab" data-tab="coach" style="cursor:pointer">
-          <div class="r-left"><div class="r-title">Coach IA</div><div class="r-sub">Discuter avec DeepSeek</div></div>
-          <div class="chevron">›</div>
-        </div>
-        <div class="row">
-          <div class="r-left"><div class="r-title">Thème sombre</div></div>
-          <div class="r-right">
-            <select id="theme-sel" style="width:auto; padding:6px; border-radius:6px; border:1px solid var(--rule); background:var(--surface)">
-              <option value="light">Clair</option>
-              <option value="dark">Sombre</option>
-              <option value="auto" selected>Auto</option>
-            </select>
-          </div>
-        </div>
+        <div class="row" data-act="tab" data-tab="coach"><div class="r-left"><div class="r-title">Coach IA</div></div><div class="chevron">›</div></div>
       </div>
     `;
   }
 
-  /* ---------- RENDU : SEANCE EN COURS ---------- */
+  /* --- RENDU : SEANCE (Pull A) --- */
   function renderSeance(){
     var el = $('#v-seance');
-    if(!state.cur){
-      el.innerHTML = `<button class="btn ghost" data-act="tab" data-tab="entrainements" style="margin-bottom:16px">‹ Retour</button><p>Séance introuvable.</p>`;
-      return;
-    }
-    var exHtml = state.cur.exercises.map(function(ex, i){
-      var setsHtml = ex.sets.map(function(s, j){
-        return `
-          <div class="set-row">
-            <div class="idx">${j+1}</div>
-            <input type="text" inputmode="numeric" value="${s.reps||''}" data-field="reps" data-ex="${i}" data-set="${j}" placeholder="Reps">
-            <input type="text" inputmode="decimal" value="${s.kg||''}" data-field="kg" data-ex="${i}" data-set="${j}" placeholder="Kg">
-            <input type="text" inputmode="text" value="${s.n||''}" data-field="n" data-ex="${i}" data-set="${j}" placeholder="RIR">
-            <button class="icon-btn" data-act="del-set" data-ex="${i}" data-set="${j}">×</button>
-          </div>
-        `;
-      }).join('');
+    if(!state.currentSession) return;
 
+    var exHtml = state.currentSession.exercises.map(function(ex, i){
+      // Calcul résumé : 2 séries • 8-10 reps • 14kg
+      var setsCount = ex.sets.length;
+      var minReps = Math.min(...ex.sets.map(s=>s.reps||0));
+      var maxReps = Math.max(...ex.sets.map(s=>s.reps||0));
+      var maxKg = Math.max(...ex.sets.map(s=>s.kg||0));
+      var rangeReps = minReps === maxReps ? `${maxReps}` : `${minReps}-${maxReps}`;
+      
       return `
-        <div class="ex-card">
-          <div style="display:flex; justify-content:space-between; margin-bottom:10px">
-            <h3>${esc(ex.name)}</h3>
-            <button class="btn ghost" style="padding:0; font-size:14px; min-height:auto" data-act="add-set" data-ex="${i}">+ Série</button>
+        <div class="ex-row" data-act="open-exo" data-index="${i}">
+          <div class="ex-illu">🏋️</div>
+          <div class="ex-info">
+            <div class="ex-title">${esc(ex.name)}</div>
+            <div class="ex-sub">${setsCount} séries • ${rangeReps} répétitions • ${maxKg > 0 ? maxKg.toFixed(2)+' kg' : 'Poids du corps'}</div>
           </div>
-          ${setsHtml}
+          <div class="chevron">›</div>
         </div>
       `;
     }).join('');
 
     el.innerHTML = `
-      <div class="head" style="display:flex; justify-content:space-between; align-items:center">
-        <button class="btn ghost" data-act="tab" data-tab="entrainements" style="padding:0">Annuler</button>
-        <h1 style="margin:0; font-size:24px">${esc(state.cur.title)}</h1>
-        <button class="btn primary" data-act="finish-session" style="padding:8px 12px; min-height:36px">Terminer</button>
+      <div class="session-header">
+        <button class="icon-btn" data-act="tab" data-tab="entrainements"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <div style="display:flex; gap:8px">
+          <button class="icon-btn">⌨️</button>
+          <button class="icon-btn">👤</button>
+          <button class="icon-btn">⏱️</button>
+        </div>
       </div>
-      <div style="margin-bottom:16px; text-align:center">
-        <p class="sub">Séance du ${fmtShort(state.cur.date)}</p>
+      <h1 class="head" style="font-size:36px; margin-bottom:20px;">${esc(state.currentSession.title)}<br><span style="display:inline-block; width:40px; height:4px; background:var(--accent); border-radius:2px; margin-top:10px;"></span></h1>
+      
+      <div class="card">
+        ${exHtml}
       </div>
-      ${exHtml}
     `;
   }
 
-  /* ---------- RENDU : COACH ---------- */
+  /* --- RENDU : EXO DETAIL (Curl Pupitre) --- */
+  function renderExoDetail(){
+    var el = $('#v-exo-detail');
+    if(!state.currentExo) return;
+    
+    var ex = state.currentExo;
+    // Récupérer l'historique de cet exo dans les séances passées
+    var pastSessions = state.sessions.filter(s => s.exercises.some(e => e.name === ex.name)).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,3);
+
+    var setsHtml = ex.sets.map(function(s, j){
+      // Chercher les 3 dernières perfs pour cette série précise
+      var historyLines = pastSessions.map(ps => {
+        var pex = ps.exercises.find(e => e.name === ex.name);
+        var pset = pex.sets[j];
+        if(!pset) return '';
+        return `<div><u>${fmtShort(ps.date)}</u> ${pset.reps}×${Number(pset.kg).toFixed(2)}kg</div>`;
+      }).join('');
+
+      return `
+        <div class="set-history-row">
+          <div class="set-circle">${j+1}</div>
+          <div class="set-main" style="width:120px">
+            ${s.reps||0}-${s.reps||0} × ${Number(s.kg||0).toFixed(2)}<span>kg</span>
+          </div>
+          <div class="set-history-text">${historyLines || '<span style="font-size:12px">Aucun historique</span>'}</div>
+        </div>
+      `;
+    }).join('');
+
+    // Graphique factice (on génère un SVG simple basé sur le maxKg)
+    var maxWeight = Math.max(...ex.sets.map(s=>s.kg||0));
+    var svgHtml = `
+      <div class="chart-container">
+        <div style="display:flex; justify-content:space-between; color:var(--muted); font-size:12px; margin-bottom:12px">
+          <span>12 ×</span>
+          <span>${maxWeight.toFixed(2)} kg</span>
+        </div>
+        <svg class="chart-svg" viewBox="0 0 300 100">
+          <path d="M0 80 Q 50 70, 100 80 T 200 40 T 300 40" fill="none" stroke="var(--accent)" stroke-width="3"/>
+          <circle cx="200" cy="40" r="4" fill="var(--accent)"/>
+          <circle cx="300" cy="40" r="4" fill="var(--accent)"/>
+        </svg>
+      </div>
+    `;
+
+    el.innerHTML = `
+      <div class="exo-detail-header">
+        <button class="icon-btn" data-act="back-to-session"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <div style="display:flex; gap:8px">
+          <button class="icon-btn">⌨️</button>
+          <button class="icon-btn">👤</button>
+          <button class="icon-btn" data-act="timer-show">⏱️</button>
+        </div>
+      </div>
+      
+      <div class="exo-detail-title">${esc(ex.name)}</div>
+      
+      <div class="card" style="padding:16px;">
+        ${setsHtml}
+      </div>
+      
+      ${svgHtml}
+    `;
+    $('#timer-bar').hidden = false;
+  }
+
+  /* --- RENDU : COACH --- */
   function renderCoach(){
     var el = $('#v-coach');
-    var c = state.cur;
-    if(!c.chat) c.chat = [];
-    var msgs = c.chat.map(m => `<div class="msg ${m.role}">${esc(m.text)}</div>`).join('');
-    
+    var msgs = state.chat.map(m => `<div class="msg ${m.role}">${esc(m.text)}</div>`).join('');
     el.innerHTML = `
       <div class="head" style="display:flex; justify-content:space-between; align-items:center">
         <button class="btn ghost" data-act="tab" data-tab="reglages" style="padding:0">‹ Retour</button>
-        <h1 style="margin:0; font-size:20px">Coach IA</h1>
-        <div style="width:60px"></div>
+        <h1 style="margin:0; font-size:20px">Coach IA</h1><div style="width:60px"></div>
       </div>
-      <div class="chat-container" id="chatlist">
-        ${msgs || '<div class="msg bot">Bonjour ! Posez-moi une question sur votre séance ou votre progression.</div>'}
-      </div>
+      <div class="chat-container" id="chatlist">${msgs || '<div class="msg bot">Bonjour ! Posez-moi une question.</div>'}</div>
       <div style="display:flex; gap:8px; margin-top:12px">
         <input type="text" id="chat-in" placeholder="Votre question..." style="flex:1">
         <button class="btn primary" data-act="send-chat">Envoyer</button>
       </div>
     `;
-    var list = $('#chatlist');
-    if(list) list.scrollTop = list.scrollHeight;
+    var list = $('#chatlist'); if(list) list.scrollTop = list.scrollHeight;
   }
 
-  /* ---------- ACTIONS ---------- */
   function renderAll(){
-    ['entrainements','exercices','historique','mensurations','reglages','seance','coach'].forEach(function(t){$('#v-'+t).hidden=state.tab!==t});
+    ['entrainements','exercices','historique','mensurations','reglages','seance','exo-detail','coach'].forEach(function(t){$('#v-'+t).hidden=state.tab!==t});
     document.querySelectorAll('nav button').forEach(function(b){
       if(b.dataset.tab===state.tab) b.classList.add('active'); else b.classList.remove('active');
     });
@@ -447,9 +405,29 @@ nav button.active{color:var(--accent)}
     else if(state.tab === 'mensurations') renderMensurations();
     else if(state.tab === 'reglages') renderReglages();
     else if(state.tab === 'seance') renderSeance();
+    else if(state.tab === 'exo-detail') renderExoDetail();
     else if(state.tab === 'coach') renderCoach();
   }
 
+  /* --- TIMER --- */
+  function updateTimerDisplay() {
+    var h = Math.floor(timerSec / 3600);
+    var m = Math.floor((timerSec % 3600) / 60);
+    var s = timerSec % 60;
+    $('#timer-display').textContent = pad(h) + ':' + pad(m) + ':' + pad(s);
+  }
+  function toggleTimer() {
+    if(timerRunning) {
+      clearInterval(timerInt);
+      $('#timer-btn').textContent = 'Start';
+    } else {
+      timerInt = setInterval(() => { timerSec++; updateTimerDisplay(); }, 1000);
+      $('#timer-btn').textContent = 'Stop';
+    }
+    timerRunning = !timerRunning;
+  }
+
+  /* --- ACTIONS --- */
   document.addEventListener('click', function(ev){
     var t = ev.target.closest('[data-act]');
     if(!t) return;
@@ -463,69 +441,47 @@ nav button.active{color:var(--accent)}
     else if(act === 'start-tpl'){
       var tpl = state.templates.find(x => x.id === t.dataset.id);
       if(!tpl) return;
-      var ns = { id: uid8(), date: todayStr(), title: tpl.title, exercises: [], updatedAt: Date.now() };
+      
+      var ns = { id: uid8(), date: todayStr(), title: tpl.title, exercises: [] };
       tpl.exercises.forEach(function(exName){
-        var h = state.sessions.flatMap(s => s.exercises).filter(e => e.name === exName).sort((a,b)=>b.date?.localeCompare(a.date||''))[0];
-        var sets = [];
-        for(var i=0; i<3; i++) sets.push({reps: h ? (h.sets[i]?.reps || 10) : 10, kg: h ? (h.sets[i]?.kg || 0) : 0});
+        // Pré-remplir avec l'historique
+        var h = state.sessions.flatMap(s => s.exercises).filter(e => e.name === exName)[0];
+        var sets = [{reps: h?.sets[0]?.reps || 10, kg: h?.sets[0]?.kg || 0}, {reps: h?.sets[1]?.reps || 10, kg: h?.sets[1]?.kg || 0}];
         ns.exercises.push({name: exName, sets: sets});
       });
-      state.cur = ns;
+      state.currentSession = ns;
       state.tab = 'seance';
       renderAll();
     }
-    else if(act === 'add-set'){
-      var i = parseInt(t.dataset.ex);
-      state.cur.exercises[i].sets.push({reps: null, kg: null, n: null});
-      renderSeance();
-    }
-    else if(act === 'del-set'){
-      var i = parseInt(t.dataset.ex), j = parseInt(t.dataset.set);
-      state.cur.exercises[i].sets.splice(j, 1);
-      renderSeance();
-    }
-    else if(act === 'finish-session'){
-      // Sauvegarder la séance
-      state.sessions.push(JSON.parse(JSON.stringify(state.cur)));
-      saveSessions();
-      state.cur = null;
-      state.tab = 'entrainements';
+    else if(act === 'open-exo'){
+      var idx = parseInt(t.dataset.index);
+      state.currentExo = state.currentSession.exercises[idx];
+      state.tab = 'exo-detail';
       renderAll();
     }
-    else if(act === 'cal-prev'){
-      calMonth--;
-      if(calMonth < 0){ calMonth = 11; calYear--; }
-      renderHistorique();
+    else if(act === 'back-to-session'){
+      state.currentExo = null;
+      $('#timer-bar').hidden = true; // cacher le timer
+      state.tab = 'seance';
+      renderAll();
     }
-    else if(act === 'cal-next'){
-      calMonth++;
-      if(calMonth > 11){ calMonth = 0; calYear++; }
-      renderHistorique();
-    }
-    else if(act === 'add-metric'){
-      var key = t.dataset.key;
-      var val = prompt('Entrez la nouvelle valeur pour : ' + key);
-      if(val) {
-        state.metrics.push({ key: key, value: val, unit: t.dataset.unit, date: todayStr() });
-        saveMetrics();
-        renderMensurations();
-      }
-    }
+    else if(act === 'cal-prev'){ calMonth--; if(calMonth < 0){ calMonth = 11; calYear--; } renderHistorique(); }
+    else if(act === 'cal-next'){ calMonth++; if(calMonth > 11){ calMonth = 0; calYear++; } renderHistorique(); }
+    else if(act === 'timer-show'){ $('#timer-bar').hidden = false; }
+    else if(act === 'timer-toggle'){ toggleTimer(); }
+    else if(act === 'timer-reset'){ clearInterval(timerInt); timerRunning = false; timerSec = 0; updateTimerDisplay(); $('#timer-btn').textContent = 'Start'; }
     else if(act === 'send-chat'){
       var inp = $('#chat-in');
       if(!inp || !inp.value.trim()) return;
       var q = inp.value.trim();
       inp.value = '';
-      if(!state.cur) state.cur = { chat: [] };
-      if(!state.cur.chat) state.cur.chat = [];
-      state.cur.chat.push({ role: 'user', text: q });
+      state.chat.push({ role: 'user', text: q });
       renderCoach();
       
       var samplePromise = getSample();
       samplePromise.then(sample => {
         return sample("Contexte muscu. Question: " + q, {
           onText: function(res) {
-            // Remplacer le dernier message bot ou en créer un
             var msgs = document.querySelectorAll('.msg.bot');
             var lastBot = msgs[msgs.length - 1];
             if(!lastBot || lastBot.textContent === 'En cours...') {
@@ -539,35 +495,23 @@ nav button.active{color:var(--accent)}
           }
         });
       }).then(res => {
-        state.cur.chat.push({ role: 'bot', text: res.text });
-        // Note: on ne sauvegarde pas le chat dans les sessions pour ne pas polluer l'historique
+        state.chat.push({ role: 'bot', text: res.text });
       }).catch(err => {
         alert("Erreur coach : " + err.message);
       });
     }
-  });
-
-  document.addEventListener('input', function(ev){
-    var t = ev.target;
-    if(t.dataset && t.dataset.field && state.cur){
-      var i = parseInt(t.dataset.ex);
-      var j = parseInt(t.dataset.set);
-      var s = state.cur.exercises[i].sets[j];
-      if(t.dataset.field === 'reps') s.reps = parseInt(t.value) || null;
-      if(t.dataset.field === 'kg') s.kg = parseFloat(t.value.replace(',','.')) || null;
-      if(t.dataset.field === 'n') s.n = t.value;
+    // SAUVEGARDER LA SÉANCE (bouton Terminer)
+    else if(act === 'finish-session'){
+      state.sessions.push(JSON.parse(JSON.stringify(state.currentSession)));
+      saveSessions();
+      state.currentSession = null;
+      state.currentExo = null;
+      $('#timer-bar').hidden = true;
+      state.tab = 'entrainements';
+      renderAll();
     }
   });
 
-  document.addEventListener('change', function(ev){
-    var t = ev.target;
-    if(t.id === 'theme-sel'){
-      if(t.value === 'auto') document.documentElement.removeAttribute('data-theme');
-      else document.documentElement.setAttribute('data-theme', t.value);
-    }
-  });
-
-  // Lancer
   initStore();
 })();
 </script>
