@@ -108,6 +108,16 @@ nav button.active svg{transform: translateY(-2px);}
 .msg{max-width:85%; padding:12px 16px; border-radius:20px; font-size:15px; line-height:1.4; animation: fadeInUp 0.3s ease forwards;}
 .msg.user{align-self:flex-end; background:var(--accent); color:#fff; border-bottom-right-radius:4px; animation-name: slideInRight;}
 .msg.bot{align-self:flex-start; background:var(--surface); border:1px solid var(--rule); border-bottom-left-radius:4px; animation-name: slideInLeft;}
+
+/* Correctif Historique */
+.cal { background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+.cal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.cal-head button { background: var(--bg); border: 1px solid var(--rule); border-radius: 8px; width: 36px; height: 36px; color: var(--fg); font-size: 18px; display: flex; align-items: center; justify-content: center; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; gap: 8px 0; }
+.cal-day-name { font-size: 12px; font-weight: 600; color: var(--muted); padding-bottom: 8px; }
+.cal-day { position: relative; padding: 8px 0; font-size: 15px; font-weight: 500; cursor: pointer; border-radius: 50%; color: var(--fg); }
+.cal-day.has-workout { color: var(--accent); font-weight: 700; }
+.cal-day.has-workout::after { content: ''; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 </style>
 
 <div class="wrap">
@@ -152,6 +162,103 @@ nav button.active svg{transform: translateY(-2px);}
 </div>
 
 <script>
+// BASE DE DONNÉES D'EXERCICES EXTRAITE DE TON CSV GYMBOK
+var EXERCISES_DB = [
+  {n:"Élévation Latérale Machine Unilatéral", r:"Épaules", g:"Épaules"},
+  {n:"Archer Pull", r:"Épaules", g:"Épaules"},
+  {n:"Cable Rear Delt Fly", r:"Épaules", g:"Épaules"},
+  {n:"Gym80 Lateral Raise", r:"Épaules", g:"Épaules"},
+  {n:"Gym80 Shoulder Press", r:"Épaules", g:"Épaules"},
+  {n:"LifeFitness Lateral Raise", r:"Épaules", g:"Épaules"},
+  {n:"Lu Lateral Raises", r:"Épaules", g:"Épaules"},
+  {n:"Shoulder Press", r:"Épaules", g:"Épaules"},
+  {n:"Shoulder Press Technogym", r:"Épaules", g:"Épaules"},
+  {n:"Élévation Latérale avec Haltère, Couché sur le Côté", r:"Épaules", g:"Épaules"},
+  {n:"Élévation Latérale à Un Bras à la Poulie Basse", r:"Épaules", g:"Épaules"},
+  {n:"Élévation Latérale à la Machine", r:"Épaules", g:"Épaules"},
+  {n:"Développé Arnold", r:"Épaules", g:"Épaules, Pectoraux"},
+  {n:"Développé Devant à la Barre, Assis", r:"Épaules", g:"Épaules, Pectoraux"},
+  {n:"Développé Devant à la Barre, Debout", r:"Épaules", g:"Épaules, Pectoraux"},
+  {n:"Développé Devant à la Smith Machine, Assis", r:"Épaules", g:"Épaules, Pectoraux"},
+  {n:"Face Pull", r:"Épaules", g:"Épaules, Trapèzes"},
+  {n:"Oiseau à la Machine", r:"Épaules", g:"Épaules, Trapèzes"},
+  {n:"Oiseau à la Poulie Haute", r:"Épaules", g:"Épaules, Trapèzes"},
+  {n:"Élévation Latérale avec Haltères", r:"Épaules", g:"Épaules, Trapèzes"},
+  {n:"Développé avec Haltères, Assis", r:"Épaules", g:"Épaules, Extenseurs des bras"},
+  {n:"Tirage Vertical à la Barre", r:"Épaules", g:"Épaules, Trapèzes"},
+  {n:"Tirage au Visage à la Poulie Basse, Assis", r:"Épaules", g:"Épaules, Trapèzes"},
+  {n:"Tirage au Visage à la Poulie Haute", r:"Épaules", g:"Épaules, Trapèzes"},
+  {n:"Développé incliné à la barre, prise serrée", r:"Pectoraux", g:"Épaules, Pectoraux"},
+  {n:"Cable Fly", r:"Pectoraux", g:"Pectoraux"},
+  {n:"Lifefitness Pec Fly", r:"Pectoraux", g:"Pectoraux"},
+  {n:"Pec Fly", r:"Pectoraux", g:"Pectoraux"},
+  {n:"Écarté Incliné avec Haltères", r:"Pectoraux", g:"Pectoraux"},
+  {n:"Écarté avec Haltères", r:"Pectoraux", g:"Pectoraux"},
+  {n:"Écarté à la Machine", r:"Pectoraux", g:"Pectoraux"},
+  {n:"Écarté à la Poulie", r:"Pectoraux", g:"Pectoraux"},
+  {n:"Écarté à la Poulie Basse", r:"Pectoraux", g:"Pectoraux"},
+  {n:"Écarté à la Poulie Haute", r:"Pectoraux", g:"Pectoraux"},
+  {n:"Développé Incliné à la Machine", r:"Pectoraux", g:"Pectoraux, Épaules"},
+  {n:"Eleiko Seated chest fly", r:"Pectoraux", g:"Pectoraux, Épaules"},
+  {n:"Incline Bench Machine Gym80", r:"Pectoraux", g:"Pectoraux, Épaules"},
+  {n:"Chest Press Technogym", r:"Pectoraux", g:"Pectoraux, Épaules"},
+  {n:"Développé Couché à la Barre", r:"Pectoraux", g:"Pectoraux, Épaules"},
+  {n:"Développé Incliné avec Haltères", r:"Pectoraux", g:"Pectoraux, Épaules"},
+  {n:"Développé Incliné à la Barre", r:"Pectoraux", g:"Pectoraux, Épaules"},
+  {n:"Développé Incliné à la Smith Machine", r:"Pectoraux", g:"Pectoraux, Épaules"},
+  {n:"Pompes", r:"Pectoraux", g:"Pectoraux, Épaules"},
+  {n:"Développé Couché à la Machine", r:"Pectoraux", g:"Pectoraux, Extenseurs des bras"},
+  {n:"Pull-Over avec Haltère", r:"Pectoraux", g:"Pectoraux, Muscles dorsaux"},
+  {n:"Pull-up (neutral grip)", r:"Dos", g:""},
+  {n:"Haussement d'Épaules avec Haltères", r:"Dos", g:"Trapèzes"},
+  {n:"Haussement d'Épaules à la Barre Hexagonale", r:"Dos", g:"Trapèzes"},
+  {n:"Rowing Incliné avec Haltères", r:"Dos", g:"Trapèzes, Muscles dorsaux"},
+  {n:"Rowing à la Barre T, Couché", r:"Dos", g:"Trapèzes, Muscles dorsaux"},
+  {n:"Rowing à la Barre, Buste Penché", r:"Dos", g:"Trapèzes, Muscles dorsaux"},
+  {n:"Rowing à Un Bras avec Haltère, Buste Penché", r:"Dos", g:"Trapèzes, Muscles dorsaux"},
+  {n:"Ring pull-ups", r:"Dos", g:"Trapèzes, Muscles dorsaux"},
+  {n:"Single Arm Iso Row", r:"Dos", g:"Trapèzes, Muscles dorsaux"},
+  {n:"Tirage Poitrine à la Poulie Haute, Prise Large", r:"Dos", g:"Trapèzes, Muscles dorsaux"},
+  {n:"Traction à la Barre Fixe", r:"Dos", g:"Trapèzes, Muscles dorsaux"},
+  {n:"Helms row", r:"Dos", g:"Muscles dorsaux"},
+  {n:"Standing Cable Pullover", r:"Dos", g:"Muscles dorsaux"},
+  {n:"Wide Neutral Pulldown", r:"Dos", g:"Muscles dorsaux"},
+  {n:"Rowing à la Barre, Buste Penché, Prise Inversée", r:"Dos", g:"Muscles dorsaux"},
+  {n:"Rowing à la Machine, Assis", r:"Dos", g:"Muscles dorsaux"},
+  {n:"Tirage Poitrine à la Poulie Haute, Prise Serrée", r:"Dos", g:"Muscles dorsaux"},
+  {n:"Traction à la Barre Fixe, Prise Serrée", r:"Dos", g:"Muscles dorsaux"},
+  {n:"Iso-Lateral High Row", r:"Dos", g:"Muscles dorsaux"},
+  {n:"Inverted Row", r:"Dos", g:"Muscles dorsaux"},
+  {n:"Low Pull", r:"Dos", g:"Muscles dorsaux"},
+  {n:"Pull-up Neutral Fat Grip", r:"Dos", g:"Muscles dorsaux"},
+  {n:"Rowing A La Poulie Basse A Un Bras", r:"Dos", g:"Muscles dorsaux"},
+  {n:"Single Arm High Row (Cable)", r:"Dos", g:"Muscles dorsaux"},
+  {n:"Traction à la Barre Fixe, Prise Inversée", r:"Dos", g:"Muscles dorsaux, Fléchisseurs des bras"},
+  {n:"Soulevé de Terre Roumain à la Barre", r:"Dos", g:"Muscles lombaires, Fessiers, Ischio-jambiers"},
+  {n:"Dips aux Barres Parallèles", r:"Bras", g:"Pectoraux, Extenseurs des bras"},
+  {n:"Développé Couché à la Barre, Prise Serrée", r:"Bras", g:"Pectoraux, Extenseurs des bras"},
+  {n:"Extension des Triceps avec Un Haltère, Assis", r:"Bras", g:"Extenseurs des bras"},
+  {n:"Extension des Triceps à la Poulie Basse, Debout", r:"Bras", g:"Extenseurs des bras"},
+  {n:"Extension des Triceps à la Poulie Haute", r:"Bras", g:"Extenseurs des bras"},
+  {n:"Leaning Overhead Extension (rope)", r:"Bras", g:"Extenseurs des bras"},
+  {n:"Curl Alterné avec Haltères, Prise Marteau", r:"Bras", g:"Fléchisseurs des bras"},
+  {n:"Curl Incliné avec Haltères", r:"Bras", g:"Fléchisseurs des bras"},
+  {n:"Curl Pupitre à Un Bras avec Haltère, Debout", r:"Bras", g:"Fléchisseurs des bras"},
+  {n:"Curl Pupitre à la Machine", r:"Bras", g:"Fléchisseurs des bras"},
+  {n:"Curl à la Barre", r:"Bras", g:"Fléchisseurs des bras"},
+  {n:"Curl à la Poulie Basse, Prise Marteau", r:"Bras", g:"Fléchisseurs des bras"},
+  {n:"Curl à la Barre, Prise Inversée", r:"Bras", g:"Extenseurs des poignets, Fléchisseurs des bras"},
+  {n:"Planche", r:"Abdominaux", g:"Muscles lombaires, Abdominaux, Obliques"},
+  {n:"Relevé de Jambes à la Machine", r:"Abdominaux", g:"Abdominaux"},
+  {n:"Relevé du Buste Incliné", r:"Abdominaux", g:"Abdominaux"},
+  {n:"Fente avec Haltères", r:"Fessiers", g:"Fessiers, Quadriceps"},
+  {n:"Squat Devant à la Barre", r:"Jambes", g:"Fessiers, Quadriceps"},
+  {n:"Squat à la Barre", r:"Jambes", g:"Fessiers, Quadriceps"},
+  {n:"Hack Squat à la Machine", r:"Jambes", g:"Fessiers, Quadriceps"},
+  {n:"Presse des Jambes à Une Jambe, Assis", r:"Jambes", g:"Quadriceps"},
+  {n:"Flexion des Jambes, Assis", r:"Jambes", g:"Ischio-jambiers"}
+];
+
 (function(){
   var $=function(s,r){return (r||document).querySelector(s)};
   var LS_KEY='carnet-muscu.v1';
@@ -180,8 +287,8 @@ nav button.active svg{transform: translateY(-2px);}
     if(!state.templates.length){
       state.templates = [
         {id:'t1', title:'Pull A', desc:'Pectoraux Dos Bras', exercises:['Curl Pupitre à Un Bras avec Haltère, Debout','Curl à la Barre','Rowing à la Barre, Buste Penché, Prise Inversée','Pull-Over avec Haltère','Curl à la Barre, Prise Inversée','Haussement d\'Épaules à la Barre Hexagonale']},
-        {id:'t2', title:'Push A', desc:'Épaules Pectoraux Bras', exercises:['Développé couché','Développé militaire','Dips']},
-        {id:'t3', title:'Legs', desc:'Dos Jambes', exercises:['Squat','Soulevé de terre','Presse à cuisses']}
+        {id:'t2', title:'Push A', desc:'Épaules Pectoraux Bras', exercises:['Développé Couché à la Barre','Développé avec Haltères, Assis','Dips aux Barres Parallèles','Extension des Triceps à la Poulie Haute']},
+        {id:'t3', title:'Legs', desc:'Dos Jambes', exercises:['Squat à la Barre','Soulevé de Terre Roumain à la Barre','Presse des Jambes à Une Jambe, Assis','Flexion des Jambes, Assis']}
       ];
       saveTemplates();
     }
@@ -240,7 +347,19 @@ nav button.active svg{transform: translateY(-2px);}
 
   /* --- RENDU : EXERCICES --- */
   function renderExercices(){
-    $('#v-exercices').innerHTML = `<div class="head"><h1>Exercices</h1><div class="line"></div></div><div class="card" style="padding:16px;text-align:center;color:var(--muted)">Recherche bientôt disponible.</div>`;
+    // Regrouper par catégorie principale
+    var groups = {};
+    EXERCISES_DB.forEach(function(ex) {
+      if (!groups[ex.r]) groups[ex.r] = [];
+      groups[ex.r].push(ex);
+    });
+    
+    var html = Object.keys(groups).sort().map(function(g) {
+      var list = groups[g].map(function(ex) { return `<div class="row"><div class="r-left"><div class="r-title">${esc(ex.n)}</div><div class="r-sub">${esc(ex.g)}</div></div></div>`; }).join('');
+      return `<h3 style="padding:16px 16px 8px; font-size:14px; text-transform:uppercase; color:var(--muted)">${esc(g)}</h3><div class="card">${list}</div>`;
+    }).join('');
+
+    $('#v-exercices').innerHTML = `<div class="head"><h1>Exercices</h1><div class="line"></div></div><div style="margin-bottom:16px">${html}</div>`;
   }
 
   /* --- RENDU : HISTORIQUE --- */
@@ -255,8 +374,8 @@ nav button.active svg{transform: translateY(-2px);}
     for (var i = 0; i < offset; i++) daysHtml += '<div></div>';
     for (var d = 1; d <= daysInMonth; d++) {
       var dateStr = calYear + '-' + pad(calMonth+1) + '-' + pad(d);
-      var hasWorkout = state.sessions.some(s => s.date === dateStr);
-      daysHtml += `<div class="cal-day ${hasWorkout ? 'has-workout' : ''}">${d}</div>`;
+      var sessionOnDay = state.sessions.find(s => s.date === dateStr);
+      daysHtml += `<div class="cal-day ${sessionOnDay ? 'has-workout' : ''}">${d}</div>`;
     }
 
     el.innerHTML = `
@@ -483,7 +602,7 @@ nav button.active svg{transform: translateY(-2px);}
 
     if(act === 'tab'){
       state.tab = t.dataset.tab;
-      if (state.tab !== 'exo-detail') $('#timer-bar').hidden = true; // Cacher le timer si on quitte
+      if (state.tab !== 'exo-detail') $('#timer-bar').hidden = true;
       renderAll();
       window.scrollTo(0,0);
     }
